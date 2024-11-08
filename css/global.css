@@ -6,7 +6,7 @@
     color: #F4F1CE;
 
 }
-header, footer{
+header{
     width: 100%;
     text-align: center;
     padding: 8px;
@@ -872,4 +872,11 @@ main section {
     width: 80%;
     display: grid;
     margin: 20px auto;
+}
+
+footer{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding: 1%;
 }

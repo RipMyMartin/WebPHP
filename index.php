@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="/css/global.css"
     <title>PHP tunnitööd</title>
 </head>
 <body>
@@ -20,20 +21,23 @@ include ('nav.php')
 
 <section>
     <?php
-    if (isset($_GET['LEHT']))
-    include('content/'."$_GET[LEHT]");
+    if (isset($_GET['LEHT'])) {
+        include('content/' . "$_GET[LEHT]");
+    }else{
+        include('content/' . "kodu.php");
+    }
 
 
 
     ?>
 </section>
-<footer>
-    <?php
-    echo 'Martin Sild  &copy';
-    echo date('Y');
 
-    ?>
-</footer>
+<?php
+//Jalus
+include ('footer.php')
+
+?>
+
 
 </body>
 </html>
