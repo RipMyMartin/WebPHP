@@ -62,6 +62,76 @@ echo '</div>';
 
         <img src="<?=$pildiAadress?>" alt='hooaja pilt'>
 
+
+
+</div>
+<div id="koolivaheaeg">
+    <h2>Mitu päeva on koolivaheajani 23.12.2024</h2>
+    <?php
+    $kdate=date_create_from_format('d.m.Y', '23.12.2024');
+    $date = date_create();
+
+    $diff = date_diff($kdate, $date);
+    echo "Jääb ".$diff->format("%a")."päeva";
+echo "<br>";
+    echo "Jääb ".$diff->days."päeva";
+    ?>
+</div>
+
+<div id="mSunnipaev">
+    <h2>Mitu päeva jääb minu sünnipäevani 09.08.2025</h2>
+    <?php
+    $sdate = date_create_from_format('d.m.Y', '09.08.2025');
+    $date = date_create();
+    $diff = date_diff($sdate, $date);
+
+    echo "Jääb veel ".$diff->days." päevi"
+
+
+    ?>
+</div>
+
+<div id="vanus">
+    <h2>Kasutaja vanuse leidmine</h2>
+
+    <form method="post" action="">
+        Sisesta oma sünnikuupäeva
+        <input type="date" name="synd" placeholder="dd.mm.yyyy">
+        <input type="submit" value="oK">
+    </form>
+
+    <?php
+    if(isset($_POST["synd"])){
+        if(empty($_POST["synd"])){
+            echo "Sisesta on sünnikuupäeva<br>";
+        }
+        else{
+            $vdate = date_create($_POST["synd"]);
+            $date = date_create();
+            $diff = date_diff($vdate, $date);
+             echo "Sa oled " . $diff->format("%y") . " aastad vana";
+        }
+    }
+    ?>
+
+</div>
+
+<div id="">
+    <h2>Massivi abil näidata kuu nimega tänases kuupäevas.</h2>
+
+    <?php
+    $kuud = array (1=>'Jaanuar', "Veebruar", "Märts", "Aprill", "Mai", "Juuni", "Juuli","August"," September","Oktober", "November", "December" );
+    $paev = date('d');
+    $year = date('Y');
+    $kuu = $kuud[date('n')];
+
+    echo 'BLA BLA TÄNA ON '.$paev.'.'.$kuu.'.'.$year;
+
+
+
+
+    ?>
+
 </div>
 
 <style>
@@ -69,7 +139,12 @@ echo '</div>';
         display: block;
         margin-left: auto;
         margin-right: auto;
-        width: 50%;
+        width: 25%;
+    }
+
+    *{
+        text-align: center;
+        padding: 15px;
     }
 
 </style>
