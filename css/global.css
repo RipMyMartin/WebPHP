@@ -887,3 +887,12 @@ div#kodu{
     border: solid;
 
 }
+div#kuupaev{
+    padding: 2%;
+    border: solid;
+    width: 20%;
+    position: relative;
+    margin: auto;
+    top: 2rem;
+
+}
