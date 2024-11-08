@@ -880,3 +880,10 @@ footer{
     bottom: 0;
     padding: 1%;
 }
+
+div#kodu{
+    margin-top: 3rem;
+    padding: 2%;
+    border: solid;
+
+}

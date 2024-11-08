@@ -9,9 +9,10 @@
     <title>PHP tunnitööd</title>
 </head>
 <body>
-<header>
-    <h1>PHP tunnitööd</h1>
-</header>
+<?php
+//header - päis
+include ('header.php');
+?>
 
 <?php
 //navigeerimismenuu

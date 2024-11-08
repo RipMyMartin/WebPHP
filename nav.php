@@ -11,7 +11,7 @@
                     <a href="?LEHT=moistatus.php">Mõistatus</a>
                 </li>
                 <li>
-                    <a href="?LEHT=moistatus.php">PUSTOI</a>
+                    <a href="?LEHT=ajaFunc.php">Ajafunktsioonid</a>
                 </li>
             </ul>
         </nav>
