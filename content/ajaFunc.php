@@ -1,3 +1,5 @@
+<div class="mainAja">
+
 <?php
 echo '<h2>Ajafunktsioonid</h2>';
 echo '<div id="kuupaev"> ';
@@ -133,6 +135,7 @@ echo "<br>";
     ?>
 
 </div>
+</div>
 
 <style>
     img {
@@ -142,9 +145,9 @@ echo "<br>";
         width: 25%;
     }
 
-    *{
+    .mainAja{
         text-align: center;
-        padding: 15px;
+        margin-top: 3rem;
     }
 
 </style>

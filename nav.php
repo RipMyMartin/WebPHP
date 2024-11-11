@@ -3,7 +3,9 @@
     <div id="content">
         <nav class="menu">
             <ul>
-                <li><a class="active" href="?LEHT=kodu.php">Home</a></li>
+                <li>
+                    <a class="active" href="?LEHT=kodu.php">Home</a>
+                </li>
                 <li>
                     <a href="?LEHT=proov.php">Teksti funktsioonid</a>
                 </li>
@@ -12,6 +14,12 @@
                 </li>
                 <li>
                     <a href="?LEHT=ajaFunc.php">Ajafunktsioonid</a>
+                </li>
+                <li>
+                    <a href="?LEHT=pildid.php">Pildid</a>
+                </li>
+                <li>
+                    <a href="?LEHT=massivid.php">Massisvid</a>
                 </li>
             </ul>
         </nav>
