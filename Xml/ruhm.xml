@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruhm>
+  <opilane>
+    <nimi href="AleksandrNadvornoi23.thkit.ee">Aleksandr</nimi>
+    <perenimi>Aleksejev</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="ValeriaAllik23.thkit.ee">Valeria</nimi>
+    <perenimi>Allik</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="TimurBasirov23.thkit.ee">Timur</nimi>
+    <perenimi>Basirov</perenimi>
+    <vanus>19</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="ErikGerega23.thkit.ee">Erik</nimi>
+    <perenimi>Gerega</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="MarijaGorbunova23.thkit.ee">Marija</nimi>
+    <perenimi>Gorbunova</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="DariaHalchenko23.thkit.ee">Daria</nimi>
+    <perenimi>Halchenko</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="AntonIvanov23.thkit.ee">Anton</nimi>
+    <perenimi>Ivanov</perenimi>
+    <vanus>20</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="VladislavKudriashev23.thkit.ee">Vladislav</nimi>
+    <perenimi>Kudriashev</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Linux</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="DavidLennuk23.thkit.ee">David</nimi>
+    <perenimi>Lennuk</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Sport</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="AleksanderMilisenko23.thkit.ee">Aleksander</nimi>
+    <perenimi>Milisenko</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="JelizavetaOstapjuk23.thkit.ee">Jelezaveta</nimi>
+    <perenimi>Ostapjuk</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="RomanSandakov23.thkit.ee">Roman</nimi>
+    <perenimi>Sandakov</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Magamine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="KirillSats23.thkit.ee">Kirill</nimi>
+    <perenimi>Sats</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Sport</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="AleksandraSemjonova23.thkit.ee">Aleksandra</nimi>
+    <perenimi>Semjonova</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="BogdanSergachev23.thkit.ee">Bogdan</nimi>
+    <perenimi>Sergachev</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="MartinSild23.thkit.ee">Martin</nimi>
+    <perenimi>Sild</perenimi>
+    <vanus>17</vanus>
+    <hobbi>POLE</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="GlebSotsjov23.thkit.ee">Gleb</nimi>
+    <perenimi>Sotsjov</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="VsevolodTsarev23.thkit.ee">Vsevlod</nimi>
+    <perenimi>Tsarev</perenimi>
+    <vanus>17</vanus>
+    <hobbi>Küsimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="BogdanViblyy23.thkit.ee">Bogdan</nimi>
+    <perenimi>Viblyy</perenimi>
+    <vanus>18</vanus>
+    <hobbi>Programeerimine</hobbi>
+  </opilane>
+  <opilane>
+    <nimi href="davidMyrseth23.thkit.ee">David</nimi>
+    <perenimi>Myrseth</perenimi>
+    <vanus>18</vanus>
+    <hobbi>Sport</hobbi>
+  </opilane>
+<opilane><nimi href="GlebSotsjov23.thkit.ee">GLEBLOX</nimi><perenimi>LOH</perenimi><vanus>18</vanus><hobbi>SOSAT</hobbi></opilane></ruhm>

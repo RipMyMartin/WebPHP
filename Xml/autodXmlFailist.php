@@ -21,7 +21,6 @@ function otsingNumbriAutonumbriJargi($paring)
     <title>Document</title>
 </head>
 <body>
-
 <h2>Autode andmed XML failist</h2>
 
 

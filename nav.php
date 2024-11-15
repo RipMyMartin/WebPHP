@@ -22,7 +22,10 @@
                     <a href="?LEHT=massivid.php">Massisvid</a>
                 </li>
                 <li>
-                    <a href="?LEHT=Xml/autodXmlFailist.php">XML failid</a>
+                    <a href="Xml/autodXmlFailist.php" target="_blank">XML failid</a>
+                </li>
+                <li>
+                    <a href="Xml/ruhmaLeht.php" target="_blank">XML failid</a>
                 </li>
             </ul>
         </nav>
