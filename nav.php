@@ -21,6 +21,9 @@
                 <li>
                     <a href="?LEHT=massivid.php">Massisvid</a>
                 </li>
+                <li>
+                    <a href="?LEHT=Xml/autodXmlFailist.php">XML failid</a>
+                </li>
             </ul>
         </nav>
     </div>

@@ -28,8 +28,6 @@ include ('nav.php')
         include('content/' . "kodu.php");
     }
 
-
-
     ?>
 </section>
 

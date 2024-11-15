@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<autod>
+    <auto>
+        <mark>Nissan</mark>
+        <autonumber>123ABC</autonumber>
+        <omanik>Martin</omanik>
+        <v_aasta>2010</v_aasta>
+    </auto>
+
+    <auto>
+        <mark>BMW</mark>
+        <autonumber>981NBM</autonumber>
+        <omanik>Kirill</omanik>
+        <v_aasta>2040</v_aasta>
+    </auto>
+
+    <auto>
+        <mark>Volvo</mark>
+        <autonumber>956LKS</autonumber>
+        <omanik>Bogdan</omanik>
+        <v_aasta>2020</v_aasta>
+    </auto>
+
+    <auto>
+        <mark>Ford</mark>
+        <autonumber>576KLA</autonumber>
+        <omanik>David</omanik>
+        <v_aasta>2022</v_aasta>
+    </auto>
+
+    <auto>
+        <mark>Lada</mark>
+        <autonumber>333LLL</autonumber>
+        <omanik>Seva</omanik>
+        <v_aasta>1990</v_aasta>
+    </auto>
+</autod>
