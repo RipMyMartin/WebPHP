@@ -1,5 +1,10 @@
 <?php
+if (isset($_GET['code'])) {die(highlight_file(__FILE__));}
+?>
+
+<?php
 $ruhm = simplexml_load_file("ruhm.xml");
+
 
 function koikotsing($paring)
 {
@@ -91,7 +96,7 @@ if (!empty($_POST["otsing"])) {
 }
 ?>
 
-<form action="highlight.php" method="post">
+<form action="?code" method="post">
     <input type="submit" name="Click" value="Vaadata lehe koodi">
 </form>
 
@@ -127,55 +132,33 @@ if (!empty($_POST["otsing"])) {
     </table>
 </form>
 
-
 <?php
-if(isset($_POST['submit'])){
-    $nimi = $_POST['nimi'];
-    $nimi_href = $_POST['nimi_href'];
-    $perenimi = $_POST['perenimi'];
-    $vanus = $_POST['vanus'];
-    $hobbi = $_POST['hobbi'];
-
-    $xmlFile = 'ruhm.xml';
+if (isset($_POST['submit'])) {
     $xmlDoc = new DOMDocument("1.0", "UTF-8");
+    $xmlDoc->preserveWhiteSpace = false;
+    $xmlDoc->load('ruhm.xml');
+    $xmlDoc->formatOutput = true;
 
-    if (file_exists($xmlFile)) {
-        $xmlDoc->load($xmlFile);
-    } else {
-        $root = $xmlDoc->createElement("opilased");
-        $xmlDoc->appendChild($root);
-    }
+    $xml_root = $xmlDoc->documentElement;
 
-    $xmlRoot = $xmlDoc->documentElement;
-    $existing = false;
+    $xml_toode = $xmlDoc->createElement("opilane");
+    $xml_root->appendChild($xml_toode);
+    foreach ($_POST as $voti => $vaartus) {
+        if ($voti == 'nimi') {
+            $nimi = $_POST['nimi'];
+            $nimi_href = isset($_POST['nimi_href']) ? $_POST['nimi_href'] : '';
+            $kirje = $xmlDoc->createElement($voti, $nimi);
+            $kirje->setAttribute('href', $nimi_href);
 
-    foreach ($xmlRoot->getElementsByTagName("opilane") as $opilane) {
-        if ($opilane->getElementsByTagName("nimi")->item(0)->nodeValue === $nimi) {
-            $existing = true;
-            $opilane->getElementsByTagName("perenimi")->item(0)->nodeValue = $perenimi;
-            $opilane->getElementsByTagName("vanus")->item(0)->nodeValue = $vanus;
-            $opilane->getElementsByTagName("hobbi")->item(0)->nodeValue = $hobbi;
-            $opilane->getElementsByTagName("nimi")->item(0)->setAttribute("href", $nimi_href);
-            break;
+        } else {
+            $kirje = $xmlDoc->createElement($voti, $vaartus);
         }
+        $xml_toode->appendChild($kirje);
     }
-
-    if (!$existing) {
-        $opilane = $xmlDoc->createElement("opilane");
-
-        $nimiElement = $xmlDoc->createElement("nimi", $nimi);
-        $nimiElement->setAttribute("href", $nimi_href);
-        $opilane->appendChild($nimiElement);
-        $opilane->appendChild($xmlDoc->createElement("perenimi", $perenimi));
-        $opilane->appendChild($xmlDoc->createElement("vanus", $vanus));
-        $opilane->appendChild($xmlDoc->createElement("hobbi", $hobbi));
-
-        $xmlRoot->appendChild($opilane);
-    }
-
-    $xmlDoc->save($xmlFile);
+    $xmlDoc->save('ruhm.xml');
 }
 ?>
+
 
 
 </body>
