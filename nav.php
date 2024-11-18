@@ -7,8 +7,7 @@
                     <a class="active" href="?LEHT=kodu.php">Home</a>
                 </li>
                 <li>
-                    <a href="?LEHT=proov.php">Teksti funktsioonid</a>
-                </li>
+                    <a href="?LEHT=proov.php">Tekst func</a>
                 <li>
                     <a href="?LEHT=moistatus.php">Mõistatus</a>
                 </li>
@@ -34,12 +33,17 @@
 
 <style>
 
+    #main{
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+    }
 
     a{ text-decoration: none; }
 
     #content{
-        width: 648px;
         margin: auto;
+        width: auto;
     }
     .menu, .menu ul{
         line-height: 1;

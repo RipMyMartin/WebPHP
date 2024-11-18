@@ -102,7 +102,7 @@ if (!empty($_POST["otsing"])) {
 
 
 
-<h2>Toote sisestamine</h2>
+<h2>Andmete sisestamine</h2>
 <form action="" method="post" name="vorm1">
     <table>
         <tr>
@@ -125,9 +125,10 @@ if (!empty($_POST["otsing"])) {
             <td><label for="hobbi">hobbi</label></td>
             <td><input type="text" name="hobbi" id="hobbi" required></td>
         </tr>
+    </table>
+    <table>
         <tr>
             <td><input type="submit" name="submit" id="submit" value="Sisesta"></td>
-            <td></td>
         </tr>
     </table>
 </form>
@@ -135,9 +136,9 @@ if (!empty($_POST["otsing"])) {
 <?php
 if (isset($_POST['submit'])) {
     $xmlDoc = new DOMDocument("1.0", "UTF-8");
-    $xmlDoc->preserveWhiteSpace = false;
+    $xmlDoc->preserveWhiteSpace = false; //https://stackoverflow.com/questions/4504811/how-can-i-display-xml-with-whitespace-formatting
     $xmlDoc->load('ruhm.xml');
-    $xmlDoc->formatOutput = true;
+    $xmlDoc->formatOutput = true; //automatically adds indents and new lines
 
     $xml_root = $xmlDoc->documentElement;
 
