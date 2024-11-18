@@ -35,7 +35,7 @@ include ('nav.php')
 //Jalus
 include ('footer.php')
 
-//kontroll
+//kontroll git
 ?>
 
 </body>
