@@ -106,7 +106,7 @@ if (!empty($_POST["otsing"])) {
 <form action="" method="post" name="vorm1">
     <table>
         <tr>
-            <td><label for="nimi">nimi:</label></td>
+            <td><label for="nimi">Nimi:</label></td>
             <td><input type="text" name="nimi" id="nimi" autofocus required></td>
         </tr>
         <tr>
@@ -114,15 +114,15 @@ if (!empty($_POST["otsing"])) {
             <td><input type="text" name="nimi_href" id="nimi_href" required></td>
         </tr>
         <tr>
-            <td><label for="perenimi">perenimi:</label></td>
+            <td><label for="perenimi">Perenimi:</label></td>
             <td><input type="text" name="perenimi" id="perenimi" required></td>
         </tr>
         <tr>
-            <td><label for="vanus">vanus</label></td>
+            <td><label for="vanus">Vanus</label></td>
             <td><input type="text" name="vanus" id="vanus" required></td>
         </tr>
         <tr>
-            <td><label for="hobbi">hobbi</label></td>
+            <td><label for="hobbi">Hobbi</label></td>
             <td><input type="text" name="hobbi" id="hobbi" required></td>
         </tr>
     </table>
