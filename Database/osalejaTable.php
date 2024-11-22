@@ -55,7 +55,6 @@ $paring->execute();
         echo "<td>" . htmlspecialchars($telefon) . "</td>";
         echo "<td> <img src='$pilt' alt='osaleja_pilt' width='60px'> </td>";
         echo "<td> $vanus </td>";
-        echo "<td> $synniaeg </td>";
         echo "</tr>";
     }
     ?>
