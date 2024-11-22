@@ -26,6 +26,12 @@
                 <li>
                     <a href="Xml/ruhmaLeht.php" target="_blank">XML failid</a>
                 </li>
+                <li>
+                    <a href="Database/andmeTabeliSisu.php" target="_blank">AndmedTabeliSisu</a>
+                </li>
+                <li>
+                    <a href="Database/osalejaTable.php" target="_blank">osalejaTabel</a>
+                </li>
             </ul>
         </nav>
     </div>
