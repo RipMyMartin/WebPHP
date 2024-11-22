@@ -10,7 +10,11 @@ if (isset($_REQUEST["kustuta"])){
 }
 
 //lisamine
-if (isset($_REQUEST['nimi']) && !empty($_REQUEST['nimi']) && !empty($_REQUEST['telefon']) && !empty($_REQUEST['pilt']) && !empty($_REQUEST['pilt']) && !empty($_REQUEST['pilt']) && !empty($_REQUEST['synniaeg'])) {
+if (isset($_REQUEST['nimi'])
+    && !empty($_REQUEST['nimi'])
+    && !empty($_REQUEST['telefon'])
+    && !empty($_REQUEST['pilt'])
+    && !empty($_REQUEST['synniaeg'])) {
     global $yhendus;
     $paring = $yhendus ->prepare("INSERT INTO osaleja(nimi,telefon,pilt,synniaeg) VALUES(?,?,?,?)");
     $paring -> bind_param("siss" ,$_REQUEST['nimi'], $_REQUEST['telefon'], $_REQUEST['pilt'], $_REQUEST['synniaeg']);
@@ -35,6 +39,7 @@ $paring->execute();
 <body>
 <h1>Osaleja database</h1>
 
+<!--väljastame nimet-->
 <table>
     <tr>
         <th></th>
@@ -43,10 +48,11 @@ $paring->execute();
         <th>telefon</th>
         <th>pilt</th>
         <th>Vanus</th>
-        <th>synniaeg</th>
     </tr>
     <?php
+    //väljastame andmed on andmebaasis
     while ($paring->fetch()) {
+        //arvutame datetime'ist vanuse
         $vanus = date_diff(date_create($synniaeg), date_create('today'))->y;
         echo "<tr>";
         echo "<td><a href='?kustuta=$id'>X</a> </td>";
@@ -59,6 +65,7 @@ $paring->execute();
     }
     ?>
 </table>
+<!--osalejate sisestamine-->
 <h1>Osalejate lisamine</h1>
 <form action="?" method="post">
     <label for="nimi">Nimi</label>
