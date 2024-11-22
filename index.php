@@ -27,7 +27,7 @@ include ('nav.php')
     }else{
         include('content/' . "kodu.php");
     }
-
+//git controll
     ?>
 </section>
 
