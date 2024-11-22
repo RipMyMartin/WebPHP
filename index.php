@@ -36,6 +36,7 @@ include ('nav.php')
 include ('footer.php')
 
 //kontroll git
+//git controll
 ?>
 
 </body>
