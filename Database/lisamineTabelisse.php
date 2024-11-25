@@ -1,6 +1,6 @@
 <?php
-//require ('conf.php');
-require ('confZone.php');
+require ('conf.php');
+//require ('confZone.php');
 //kustutamine
 global $yhendus;
 if (isset($_REQUEST["kustuta"])){

@@ -32,6 +32,9 @@
                 <li>
                     <a href="Database/osalejaTable.php" target="_blank">osalejaTabel</a>
                 </li>
+                <li>
+                    <a href="Database/lisamineTabelisse.php" target="_blank">LisamineTabelisse</a>
+                </li>
             </ul>
         </nav>
     </div>
