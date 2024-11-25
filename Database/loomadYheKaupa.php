@@ -115,9 +115,11 @@ if(isset($_REQUEST["lisamine"])){
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
-        margin: 0;
+        margin: auto;
         padding: 0;
+        width: 50%;
     }
+
 
     #menu {
         background-color: #333;
