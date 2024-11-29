@@ -1,23 +1,30 @@
 <?php
 require "conf.php";
 
-//kustutamine
+// Kustutamine
 global $yhendus;
-if (isset($_REQUEST["kustuta"])){
+if (isset($_REQUEST["kustuta"])) {
     $kask = $yhendus->prepare("DELETE FROM osaleja WHERE id=?");
-    $kask->bind_param("i",$_REQUEST["kustuta"]);
+    $kask->bind_param("i", $_REQUEST["kustuta"]);
     $kask->execute();
 }
 
-//tabeli andmete lisamine
+// Tabeli andmete lisamine
 if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQUEST['telefon']) && !empty($_REQUEST['pilt']) && !empty($_REQUEST['synniaeg'])) {
     global $yhendus;
-    $paring = $yhendus->prepare("INSERT INTO osaleja(nimi, telefon, pilt, synniaeg) VALUES (?, ?, ?, ?)");
-    $paring->bind_param("ssss", $_REQUEST['nimi'], $_REQUEST['telefon'], $_REQUEST['pilt'], $_REQUEST['synniaeg']);
-    $paring->execute();
-}
 
+    // Kontrollime, kas telefoninumber sisaldab ainult numbreid
+    if (!ctype_digit($_REQUEST['telefon'])) {
+        echo "Telefoninumber peab sisaldama ainult numbreid!";
+    } else {
+        // Kui kõik on korras, lisame andmed andmebaasi
+        $paring = $yhendus->prepare("INSERT INTO osaleja(nimi, telefon, pilt, synniaeg) VALUES (?, ?, ?, ?)");
+        $paring->bind_param("ssss", $_REQUEST['nimi'], $_REQUEST['telefon'], $_REQUEST['pilt'], $_REQUEST['synniaeg']);
+        $paring->execute();
+    }
+}
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +32,7 @@ if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQU
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="matka.css">
     <title>Matka osalejad</title>
 </head>
 <body>
@@ -82,7 +90,7 @@ if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQU
         if($paring->fetch()){
             $vanus = date_diff(date_create($synniaeg), date_create('today'))->y;
             echo "<div class='selectDiv'> Nimi: ".$nimi;
-            echo "<br> Number: ".$telefon;
+            echo "<br> Number: +372 ".$telefon;
             echo "<br><img src='$pilt' alt='osaleja pilt' width='100px'>";
             echo "<br>Vanus: ".$vanus;
             echo "<br><a href='?kustuta=$id'>X</a></br>";
@@ -100,19 +108,20 @@ if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQU
         <form action="?" method="post">
             <input type="hidden" value="jah" name="uusOsaleja">
             <label for="nimi">Nimi</label>
-            <input type="text" id="nimi" name="nimi">
+            <input type="text" id="nimi" name="nimi" required>
             <br>
-            <label for="telefon">telefon</label>
-            <input type="text" id="telefon" name="telefon">
+            <label for="telefon">Telefon</label>
+            <input type="tel" id="telefon" name="telefon" pattern="[0-9]+" title="Telefoninumber peab sisaldama ainult numbreid" required>
             <br>
-            <label for="pilt">pilt</label>
-            <input type="text" id="pilt" name="pilt">
+            <label for="pilt">Pilt</label>
+            <input type="text" id="pilt" name="pilt" required>
             <br>
-            <label for="synniaeg">sünniaeg</label>
-            <input type="date" id="synniaeg" name="synniaeg">
+            <label for="synniaeg">Sünniaeg</label>
+            <input type="date" id="synniaeg" name="synniaeg" required>
             <br>
-            <input type="submit" value="oK">
+            <input type="submit" value="OK">
         </form>
+
         <?php
     }
     ?>
@@ -121,144 +130,3 @@ if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQU
 </body>
 </html>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        padding: 0;
-        width: 100%;
-        max-width: 1000px;
-        margin: auto;
-    }
-
-    .selectDiv{
-        border: #181818 solid;
-        width: 60%;
-        margin: auto;
-    }
-
-    h1 {
-        text-align: center;
-        color: #5c6bc0;
-    }
-
-    .main {
-        background-color: #333;
-        padding: 15px;
-        color: white;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .nuppLisa a{
-        text-align: center;
-    }
-    .nuppLisa {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    #menu a, .nuppLisa a {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #5c6bc0;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-        width: 200px;
-        text-align: center;
-    }
-
-    #menu a:hover, .nuppLisa a:hover {
-        background-color: #3f51b5;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: auto;
-        table-layout: fixed;
-    }
-
-    th, td {
-        padding: 12px;
-        border: 1px solid #ddd;
-        text-align: center;
-        background-color: #fff;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    td img {
-        border: #181818 solid 1px;
-        width: 100px;
-        height: 100px;
-    }
-
-    .clickInfo, .lisaDiv, .nuppLisa {
-        margin: 20px;
-    }
-
-    .clickInfo div {
-        border: solid 1px #71797E;
-        padding: 20px;
-        background-color: #fafafa;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .clickInfo a {
-        text-decoration: none;
-        color: red;
-    }
-
-    form {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        margin: auto;
-    }
-
-    form input[type="text"],
-    form input[type="color"],
-    form input[type="date"],
-    form input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    form input[type="submit"] {
-        background-color: #5c6bc0;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    form input[type="submit"]:hover {
-        background-color: #3f51b5;
-    }
-
-    form label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    .main a {
-        color: white;
-        text-decoration: none;
-        padding: 8px 15px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-</style>
