@@ -30,7 +30,7 @@
                     <a href="Database/andmeTabeliSisu.php" target="_blank">AndmedTabeliSisu</a>
                 </li>
                 <li>
-                    <a href="Database/osalejaTable.php" target="_blank">osalejaTabel</a>
+                    <a href="mobiiliUlesanne/Mobiilimall/blankett.html" target="_blank">osalejaTabel</a>
                 </li>
                 <li>
                     <a href="Database/matkaOsaleja.php" target="_blank">MatkaOsaleja</a>

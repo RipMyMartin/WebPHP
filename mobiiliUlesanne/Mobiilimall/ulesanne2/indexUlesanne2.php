@@ -1,5 +1,5 @@
 <?php
-include '../../../Database/conf.php';
+include '../../../Database/confZone.php';
 include 'header.php';
 include 'nav.php';
 
@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['uusAnek']) && $_POST['
 <div class="addButton">
     <?php
     if (isset($_GET["lisaAnek"]) && $_GET["lisaAnek"] == "jah") {
-        // Show the form
         ?>
         <form action="" method="POST">
             <input type="hidden" name="uusAnek" value="jah">
@@ -63,9 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['uusAnek']) && $_POST['
         </form>
 
         <?php
-        if (isset($message)) {
-            echo "<p>$message</p>";
-        }
     }
     ?>
 </div>
@@ -87,4 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['uusAnek']) && $_POST['
         border: solid #333333;
         border-radius: 1rem;
     }
+
+
 </style>

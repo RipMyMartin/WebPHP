@@ -1,4 +1,4 @@
-<?php require("../../../Database/conf.php") ?>
+<?php require("../../../Database/confZone.php") ?>
 <?php require("header.php") ?>
 
 <div>
@@ -23,7 +23,7 @@
 
 <div class="clickInfo">
     <?php
-    if(isset($_GET["anekdoot_id"])){
+    if(isset($_REQUEST["anekdoot_id"])){
         global $yhendus;
         $anekdoot_id = $_GET["anekdoot_id"];
         $paring = $yhendus->prepare("SELECT id, nimetus, kuupaev, kirjeldus FROM anekdoot WHERE id = ?");
@@ -92,8 +92,14 @@
 <style>
     .menu {
         list-style: none;
-        margin: 0;
-        padding: 0;
+        margin: auto;
+        text-align: center;
+        padding-right: 2rem;
+        padding-left: 2rem;
+    }
+
+    .menu li {
+        padding-top: 4px;
     }
 
     .menu li:last-child {
@@ -102,12 +108,16 @@
 
     .menu a {
         text-decoration: none;
-        color: #333;
+        color: white;
+        text-color
         font-weight: bold;
         padding: 5px;
+        padding-right: 1rem ;
+        padding-left: 1rem;
         border: 1px solid #ccc;
         border-radius: 5px;
         display: inline-block;
+        background-color: #333333;
     }
 
     .nuppLisaAnek a {
@@ -135,4 +145,5 @@
         font-size: 16px;
         resize: none;
     }
+
 </style>
