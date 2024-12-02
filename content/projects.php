@@ -21,17 +21,19 @@ function groupFilesByFolder($files, $baseDir) {
     foreach ($files as $file) {
         $relativePath = str_replace($baseDir . DIRECTORY_SEPARATOR, '', $file);
         $pathParts = explode(DIRECTORY_SEPARATOR, $relativePath);
-        
+
+        // Пропускаем исключённые файлы
         if (count($pathParts) === 1 && in_array($pathParts[0], $excludedFiles)) {
             continue;
         }
 
+        // Группируем по папкам
         $folderName = array_shift($pathParts);
-
         if (!isset($folders[$folderName])) {
             $folders[$folderName] = [];
         }
 
+        // Генерация пути, учитывая подпапки
         $fileNameWithoutExtension = pathinfo(end($pathParts), PATHINFO_FILENAME);
         $folders[$folderName][] = $fileNameWithoutExtension;
     }
@@ -47,7 +49,9 @@ function createFolderStructure($folders) {
         $output .= "<div class='files'>\n";
         
         foreach ($files as $file) {
-            $output .= "<div class='file-item'>" . htmlspecialchars($file) . "</div>\n";
+            // Генерация правильного пути для файла с учётом подпапок
+            $relativePath = $folder . DIRECTORY_SEPARATOR . $file . ".php";
+            $output .= "<div class='file-item'><a href='/" . htmlspecialchars($relativePath) . "'>" . htmlspecialchars($file) . "</a></div>\n";
         }
 
         $output .= "</div>\n</div>\n";
@@ -60,7 +64,6 @@ $projectDir = realpath(__DIR__ . '/../');
 $phpFiles = findPhpFiles($projectDir);
 $folders = groupFilesByFolder($phpFiles, $projectDir);
 $folderStructure = createFolderStructure($folders);
-
 ?>
 
 <div class="folder-structure">
@@ -78,7 +81,7 @@ $folderStructure = createFolderStructure($folders);
 
 .folder {
     width: 250px;
-    background-color: #ffffff;
+    background-color: #506485;
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
