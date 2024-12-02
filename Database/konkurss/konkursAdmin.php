@@ -1,37 +1,67 @@
-<?php require "../conf.php"; global $yhendus?>
+<?php require "../confZone.php"; global $yhendus?>
 
 <?php
 //table UPDATE +1 punktid
 if (isset($_REQUEST["heaKonkurss_id"])) {
-    $paring = $yhendus->prepare("UPDATE konkurss set punktid = punktid+1 WHERE id=?;");
+    $paring = $yhendus->prepare("UPDATE konkurss set punktid = 0 WHERE id=?;");
     $paring -> bind_param("i", $_REQUEST["heaKonkurss_id"]);
     $paring -> execute();
 }
 ?>
 
 <?php
-//tabeli UPDATE -1 punktid
-if (isset($_REQUEST["halbKonkurss_id"])) {
-    $paring = $yhendus->prepare("UPDATE konkurss set punktid = punktid -1 WHERE id=?;");
-    $paring -> bind_param("i", $_REQUEST["halbKonkurss_id"]);
-    $paring -> execute();
-}
-?>
-<?php
 //tabeli INSERT
 if(!empty($_REQUEST["uusKonkurss"])){
     $paring = $yhendus -> prepare("INSERT INTO konkurss (konkursiNimi, lisamisaeg) values (?, NOW());");
     $paring -> bind_param("s", $_REQUEST["uusKonkurss"]);
     $paring -> execute();
-    header("Location:$_SERVER[PHP_SELF]");
+
 }
 ?>
+
+<?php
+//komment DELETE
+if (isset($_REQUEST["delKomment"])) {
+    $paring = $yhendus -> prepare("UPDATE konkurss SET komentaarid = ' ' WHERE id = ?;");
+    $paring -> bind_param("s", $_REQUEST["delKomment"]);
+    $paring -> execute();
+}
+?>
+
 <?php
 //tabeli DELETE
 if (isset($_REQUEST["delKonkurss"])) {
     $paring = $yhendus->prepare("DELETE FROM konkurss WHERE id=?");
-    $paring -> bind_param("i",$_REQUEST["kustuta"]);
+    $paring -> bind_param("i",$_REQUEST["delKonkurss"]);
     $paring -> execute();
+}
+?>
+<?php
+//Näita avalik
+if (isset($_REQUEST["nAvalik"])) {
+    $paring = $yhendus ->prepare("UPDATE konkurss SET avalik = 1 WHERE id = ?;");
+    $paring -> bind_param("i", $_REQUEST["nAvalik"]);
+    $paring -> execute();
+}
+?>
+<?php
+//peida avalik
+if (isset($_REQUEST["pAvalik"])) {
+    $paring = $yhendus -> prepare("UPDATE konkurss SET avalik = 0 WHERE id = ?;");
+    $paring -> bind_param("i", $_REQUEST["pAvalik"]);
+    $paring -> execute();
+}
+?>
+
+
+<?php
+//Komment INSERT
+if (isset($_REQUEST["uusKomment"])){
+    $paring = $yhendus ->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid,?) WHERE id=?; ");
+    $komentLisa = "\n".$_REQUEST["komment"];
+    $paring -> bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
+    $paring -> execute();
+    header("Location:$_SERVER[PHP_SELF]");
 }
 ?>
 
@@ -45,38 +75,58 @@ if (isset($_REQUEST["delKonkurss"])) {
     <title>TARpv23 jõulu konkursid</title>
 </head>
 <body>
-    <h2>Jõulu konkurss</h2>
+<h2>Jõulu konkurss</h2>
+<nav>
+    <ul>
+        <li><a href="konkursAdmin.php">Admin</a></li>
+        <li><a href="konkursKasutaja.php">Kasutaja</a></li>
+    </ul>
+</nav>
 
 
-    <form action="?" method="post" class="styled-form">
-        <label for="uusKonkurss">Lisa konkurssi nimi</label>
-        <input type="text" id="uusKonkurss" name="uusKonkurss" class="form-input">
-        <br>
-        <input type="submit" value="OK" class="submit-btn">
-    </form>
+<form action="?" method="post" class="styled-form">
+    <label for="uusKonkurss">Lisa konkurssi nimi</label>
+    <input type="text" id="uusKonkurss" name="uusKonkurss" class="form-input">
     <br>
+    <input type="submit" value="OK" class="submit-btn">
+</form>
+<br>
 <table>
     <tr>
         <th>Konkursi nimi</th>
         <th>Lisamis aeg</th>
         <th>Punktid</th>
-        <th colspan="3" style="text-align: center">Haldus</th>
+        <th colspan="2">Komentaarid</th>
+        <th colspan="2" style="text-align: center">Haldus</th>
+        <th colspan="3">Näita konkurs</th>
     </tr>
     <?php
     //tabeli sisu kuvamine
-    $paring = $yhendus ->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid FROM konkurss");
-    $paring->bind_result($id, $konkursiNimi, $lisamisaeg, $punktid);
+    $paring = $yhendus ->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid, komentaarid, avalik FROM konkurss");
+    $paring->bind_result($id, $konkursiNimi, $lisamisaeg, $punktid, $komentaarid, $avalik);
     $paring-> execute();
     while ($paring->fetch()) {
         echo "<tr>";
         $konkursiNimi = htmlspecialchars($konkursiNimi);
+        $komentaarid = nl2br(htmlspecialchars($komentaarid));
         echo "<td>" . $konkursiNimi . "</td>";
         echo "<td>" . $lisamisaeg . "</td>";
         echo "<td>" . $punktid . "</td>";
-        echo "<td><a class='button-link' href='?heaKonkurss_id=$id'>+1 punkt</a></td>";
-        echo "<td><a class='button-link' href='?halbKonkurss_id=$id'>-1 punkt</a></td>";
-        echo "<td><a class='button-link' href='?delKonkurss=$id'>X</a></td>";
-        echo "</tr>";
+        echo "<td>" . $komentaarid . "</td>";
+
+        ?>
+        <td>
+            <form action="?" method="post">
+                <input type="hidden" name="delKomment" value=<?="$id"?>>
+                <input type="submit" value="DELETE" class="submit-btn">
+            </form>
+        </td>
+        <?php
+        echo "<td><a class='button-link' href='?heaKonkurss_id=$id'>SET punkt 0</a></td>";
+        echo "<td><a class='button-link' href='?delKonkurss=$id'>❌</a></td>";
+        echo "<td><a class='button-link' href='?nAvalik=$id'>Näida</a></td>' ";
+        echo "<td><a class='button-link' href='?pAvalik=$id'>Peida</a></td>";
+        echo "<td>. $avalik . </td>";
     }
 
     ?>
@@ -87,6 +137,10 @@ if (isset($_REQUEST["delKonkurss"])) {
 <?php $yhendus -> close();?>
 
 <style>
+    .komentStyle{
+
+    }
+
     body{
         font-family: Arial, sans-serif;
     }
@@ -121,7 +175,7 @@ if (isset($_REQUEST["delKonkurss"])) {
 
     .button-link {
         display: inline-block;
-        padding: 10px 20px;
+        padding: 5px 20px;
         background-color: #007BFF;
         color: white;
         text-align: center;
@@ -135,8 +189,6 @@ if (isset($_REQUEST["delKonkurss"])) {
         background-color: #0056b3;
     }
 
-
-
     .styled-form {
         width: 300px;
         margin: 50px auto;
@@ -147,14 +199,12 @@ if (isset($_REQUEST["delKonkurss"])) {
         font-family: Arial, sans-serif;
     }
 
-
     .styled-form label {
         display: block;
         font-size: 14px;
         margin-bottom: 8px;
         color: #333;
     }
-
 
     .form-input {
         width: 100%;
@@ -172,7 +222,6 @@ if (isset($_REQUEST["delKonkurss"])) {
         outline: none;
     }
 
-
     .submit-btn {
         width: 100%;
         padding: 12px;
@@ -187,5 +236,37 @@ if (isset($_REQUEST["delKonkurss"])) {
 
     .submit-btn:hover {
         background-color: #0056b3;
+    }
+
+    nav {
+        background-color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        width: 25%;
+        margin: 0 auto;
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #ff6347;
     }
 </style>
