@@ -1,4 +1,4 @@
-<?php require "../confZone.php"; global $yhendus?>
+<?php require "../confZone.php"; global $yhendus; ?>
 
 <?php
 //table UPDATE +1 punktid
@@ -137,10 +137,6 @@ if (isset($_REQUEST["uusKomment"])){
 <?php $yhendus -> close();?>
 
 <style>
-    .komentStyle{
-
-    }
-
     body{
         font-family: Arial, sans-serif;
     }

@@ -6,3 +6,4 @@ $servername = "localhost";
 
 $yhendus = new mysqli($servername, $kasutaja, $parool, $andmebaas);
 $yhendus->set_charset("utf8");
+?>

@@ -97,7 +97,6 @@
     }
 
 
-
     .first-color {
     background: #ececec;
     }
