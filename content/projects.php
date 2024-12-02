@@ -16,7 +16,7 @@ function findPhpFiles($baseDir) {
 
 function groupFilesByFolder($files, $baseDir) {
     $folders = [];
-    $excludedFiles = ['footer.php', 'header.php', 'index.php', 'nav.php']; 
+    $excludedFiles = ['footer.php', 'header.php', 'index.php', 'nav.php'];
 
     foreach ($files as $file) {
         $relativePath = str_replace($baseDir . DIRECTORY_SEPARATOR, '', $file);
@@ -29,13 +29,18 @@ function groupFilesByFolder($files, $baseDir) {
 
         // Группируем по папкам
         $folderName = array_shift($pathParts);
+        $remainingPath = implode(DIRECTORY_SEPARATOR, $pathParts); // Получаем остаток пути для вложенных папок
+
         if (!isset($folders[$folderName])) {
             $folders[$folderName] = [];
         }
 
-        // Генерация пути, учитывая подпапки
-        $fileNameWithoutExtension = pathinfo(end($pathParts), PATHINFO_FILENAME);
-        $folders[$folderName][] = $fileNameWithoutExtension;
+        // Генерация пути с учётом подпапок
+        if ($remainingPath) {
+            $folders[$folderName][] = $remainingPath . DIRECTORY_SEPARATOR . pathinfo(end($pathParts), PATHINFO_FILENAME);
+        } else {
+            $folders[$folderName][] = pathinfo(end($pathParts), PATHINFO_FILENAME);
+        }
     }
 
     return $folders;
@@ -51,7 +56,15 @@ function createFolderStructure($folders) {
         foreach ($files as $file) {
             // Генерация правильного пути для файла с учётом подпапок
             $relativePath = $folder . DIRECTORY_SEPARATOR . $file . ".php";
-            $output .= "<div class='file-item'><a href='/" . htmlspecialchars($relativePath) . "'>" . htmlspecialchars($file) . "</a></div>\n";
+            
+            // Учитываем вложенные папки
+            $filePath = $folder . DIRECTORY_SEPARATOR . $file;
+            
+            // Получаем имя файла без расширения
+            $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);
+            
+            // Ссылка теперь будет содержать только имя файла без .php
+            $output .= "<div class='file-item'><a href='/" . htmlspecialchars($filePath) . ".php'>" . htmlspecialchars($fileNameWithoutExtension) . "</a></div>\n";
         }
 
         $output .= "</div>\n</div>\n";
@@ -128,16 +141,15 @@ $folderStructure = createFolderStructure($folders);
 }
 
 .file-item a {
+    background-color: transparent;
     text-decoration: none;
     color: inherit;
 }
 
 .file-item a:hover {
-    color: #4CAF50;
+    color: inherit; 
 }
 
 .file-item + .file-item {
     margin-top: 5px;
 }
-
-</style>
