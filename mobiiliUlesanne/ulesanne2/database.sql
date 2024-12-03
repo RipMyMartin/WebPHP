@@ -1,1 +1,0 @@
-create table anekdoot ( id int PRIMARY KEY AUTO_INCREMENT, nimetus varchar(50), kuupaev date, kirjeldus text );

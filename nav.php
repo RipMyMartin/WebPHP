@@ -1,122 +1,119 @@
 <div id="main">
     <div id="content">
         <nav class="menu">
-            <ul>
-                <li>
-                    <a class="active" href="?LEHT=kodu.php">Home</a>
-                </li>
-                <li>
-                    <a href="?LEHT=projects.php">Projects</a>
-                </li>
-                <li>
-                    <a href="?LEHT=proov.php">Tekst func</a>
-                </li>
-                <li>
-                    <a href="?LEHT=moistatus.php">Mõistatus</a>
-                </li>
-                <li>
-                    <a href="?LEHT=ajaFunc.php">Ajafunktsioonid</a>
-                </li>
-                <li>
-                    <a href="?LEHT=pildid.php">Pildid</a>
-                </li>
-                <li>
-                    <a href="?LEHT=massivid.php">Massisvid</a>
-                </li>
+            <div class="menu-toggle">
+                <img src="icons/hamburger-icon.png" alt="Menu" />
+            </div>
+            <ul class="menu-items">
+                <li><a class="active" href="?LEHT=kodu.php">Home</a></li>
+                <li><a href="?LEHT=projects.php">Projects</a></li>
+                <li><a href="?LEHT=proov.php">Tekst func</a></li>
+                <li><a href="?LEHT=moistatus.php">Mõistatus</a></li>
+                <li><a href="?LEHT=ajaFunc.php">Ajafunktsioonid</a></li>
+                <li><a href="?LEHT=pildid.php">Pildid</a></li>
+                <li><a href="?LEHT=massivid.php">Massisvid</a></li>
+                <li><a href="Database/matkaOsaleja.php">matkaOsaleja</a></li>
             </ul>
         </nav>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggle = document.querySelector(".menu-toggle");
+        const menuItems = document.querySelector(".menu-items");
+
+        toggle.addEventListener("click", () => {
+            menuItems.classList.toggle("active");
+        });
+    });
+
+</script>
 
 
 <style>
-#main {
-    margin: auto;
-    width: 40%;
-    padding: 10px;
-}
+    #main {
+        margin: auto;
+        width: 40%;
+        padding: 10px;
+    }
 
-a {
-    text-decoration: none;
-}
+    a {
+        text-decoration: none;
+    }
 
-#content {
-    margin: auto;
-    width: auto;
-}
+    #content {
+        margin: auto;
+        width: auto;
+    }
 
-.menu,
-.menu ul {
-    line-height: 1;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
+    .menu {
+        position: relative;
+        width: 100%;
+        background: #fff;
+        top: 10px;
+    }
 
-.menu {
-    display: block;
-    position: relative;
-    height: 47px;
-    width: 100%;
-    background: #fff;
-    top: 10px;
-}
+    .menu-toggle {
+        display: none;
+        cursor: pointer;
+        padding: 10px;
+    }
 
-.menu ul > li {
-    display: block;
-    position: relative;
-    float: left;
-}
+    .menu-toggle img {
+        width: 30px;
+        height: auto;
+    }
 
-.menu li > a {
-    display: block;
-    color: #000;
-    padding: 16px;
-    width: 130px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 300;
-    transition: all 0.5s ease;
-}
+    .menu-items {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+    }
 
-.menu li:hover > a {
-    background: #555;
-    color: #fff;
-}
+    .menu-items li {
+        margin: 0;
+        padding: 0;
+    }
 
-.dropdown {
-    display: none; 
-    position: absolute;
-    background: #ccc;
-    transition: all 0.3s ease;
-    opacity: 0;
-    z-index: 1;
-    min-width: 150px;
-}
+    .menu-items li a {
+        display: block;
+        padding: 16px;
+        color: #000;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 300;
+    }
 
-.menu li:hover > .dropdown {
-    display: block; 
-    top: 47px;
-    left: 0;
-    opacity: 1;
-}
+    .menu-items li:hover > a {
+        background: #555;
+        color: #fff;
+    }
 
-.dropdown li {
-    display: block;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-}
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
 
-.dropdown li > a {
-    padding: 10px 15px;
-    color: #000;
-    font-size: 14px;
-    font-weight: 300;
-}
 
-.dropdown li:hover > a {
-    background: #888;
-    color: #fff;
-}
+        .menu-items {
+            flex-direction: column;
+            display: none;
+            background: #fff;
+        }
+
+        .menu-items.active {
+            display: flex;
+        }
+
+        .menu-items li {
+            width: 125%;
+        }
+
+        .menu-items li a {
+            text-align: left;
+            padding: 10px 15px;
+        }
+    }
 </style>
