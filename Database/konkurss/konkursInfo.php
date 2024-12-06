@@ -1,6 +1,5 @@
-<?php require "../conf.php"; global $yhendus?>
-<?php
-?>
+<?php require "../conf.php"; global $yhendus; ?>
+
 <?php
 //table UPDATE +1 punktid
 if (isset($_REQUEST["heaKonkurss_id"])) {
@@ -59,6 +58,9 @@ if (isset($_REQUEST["uusKomment"])){
     </ul>
 </nav>
 <br>
+<div class="joulukuusk" onclick="changeImage()">
+    <img id="image" src="https://hortes.ee/wp-content/uploads/2022/11/686423686139.jpg" alt="joulukuusk">
+</div>
 <table>
     <tr>
         <th>Konkursi nimi</th>
@@ -77,7 +79,7 @@ if (isset($_REQUEST["uusKomment"])){
         echo "</tr>";
     }
     ?>
-
+</table>
     <?php
     if (isset($_REQUEST["konkurss_id"])) {
         $paring = $yhendus->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid, komentaarid FROM konkurss WHERE id = ?");
@@ -108,13 +110,34 @@ if (isset($_REQUEST["uusKomment"])){
     }
     ?>
 
-</table>
-
-</body>
+</body> 
 </html>
 <?php $yhendus -> close();?>
 
+<script>
+    function changeImage() {
+        var image = document.getElementById('image');
+        image.src = 'https://i.pinimg.com/originals/5e/16/a0/5e16a022d3d594fae2d4ad61d244cfb9.gif';
+    }
+</script>
 <style>
+    .joulukuusk {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+    }
+
+    .joulukuusk img {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+
     #sisu {
         width: 30%;
         margin: 20px auto;
