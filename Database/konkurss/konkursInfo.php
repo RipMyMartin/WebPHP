@@ -1,4 +1,8 @@
-<?php require "../conf.php"; global $yhendus; ?>
+<?php
+ob_start();
+require "../conf.php";
+global $yhendus;
+?>
 
 <?php
 //table UPDATE +1 punktid
@@ -30,24 +34,27 @@ if(!empty($_REQUEST["uusKonkurss"])){
 
 <?php
 //Komment INSERT
+ob_start();
 if (isset($_REQUEST["uusKomment"])){
     $paring = $yhendus ->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid,?) WHERE id=?; ");
     $komentLisa = "\n".$_REQUEST["komment"];
     $paring -> bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
     $paring -> execute();
-    header("Location:$_SERVER[PHP_SELF]");
+    header("Location: $_SERVER[PHP_SELF]");
+    exit;
 }
+ob_end_flush();
 ?>
 
 <!doctype html>
 <html lang="en">
-<head>
+<header>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TARpv23 jõulu konkursid</title>
-</head>
+</header>
 <body>
 <h2>Jõulu konkurss</h2>
 <nav>
@@ -112,7 +119,10 @@ if (isset($_REQUEST["uusKomment"])){
 
 </body> 
 </html>
-<?php $yhendus -> close();?>
+
+<?php
+ob_end_flush();
+$yhendus -> close();?>
 
 <script>
     function changeImage() {
