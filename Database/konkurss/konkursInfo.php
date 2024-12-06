@@ -1,5 +1,6 @@
-<?php require "../conf.php"; global $yhendus; ?>
-
+<?php require "../conf.php"; global $yhendus?>
+<?php
+?>
 <?php
 //table UPDATE +1 punktid
 if (isset($_REQUEST["heaKonkurss_id"])) {
@@ -29,15 +30,6 @@ if(!empty($_REQUEST["uusKonkurss"])){
 ?>
 
 <?php
-//tabeli DELETE
-if (isset($_REQUEST["delKonkurss"])) {
-    $paring = $yhendus->prepare("DELETE FROM konkurss WHERE id=?");
-    $paring -> bind_param("i",$_REQUEST["delKonkurss"]);
-    $paring -> execute();
-}
-?>
-
-<?php
 //Komment INSERT
 if (isset($_REQUEST["uusKomment"])){
     $paring = $yhendus ->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid,?) WHERE id=?; ");
@@ -58,59 +50,64 @@ if (isset($_REQUEST["uusKomment"])){
     <title>TARpv23 jõulu konkursid</title>
 </head>
 <body>
-    <h2>Jõulu konkurss</h2>
+<h2>Jõulu konkurss</h2>
 <nav>
     <ul>
         <li><a href="konkursAdmin.php">Admin</a></li>
         <li><a href="konkursKasutaja.php">Kasutaja</a></li>
+        <li><a href="konkursInfo.php">Info</a></li>
     </ul>
 </nav>
-    
-    
-    <form action="?" method="post" class="styled-form">
-        <label for="uusKonkurss">Lisa konkurssi nimi</label>
-        <input type="text" id="uusKonkurss" name="uusKonkurss" class="form-input">
-        <br>
-        <input type="submit" value="OK" class="submit-btn">
-    </form>
-    <br>
+<br>
 <table>
     <tr>
         <th>Konkursi nimi</th>
-        <th>Lisamis aeg</th>
-        <th>Punktid</th>
-        <th colspan="2">Komentaarid</th>
-        <th colspan="3" style="text-align: center">Haldus</th>
     </tr>
     <?php
-    //tabeli sisu kuvamine
-    $paring = $yhendus ->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid, komentaarid FROM konkurss where avalik = 1");
+    $paring = $yhendus->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid, komentaarid FROM konkurss WHERE avalik = 1");
     $paring->bind_result($id, $konkursiNimi, $lisamisaeg, $punktid, $komentaarid);
-    $paring-> execute();
+    $paring->execute();
+
     while ($paring->fetch()) {
         echo "<tr>";
         $konkursiNimi = htmlspecialchars($konkursiNimi);
         $komentaarid = nl2br(htmlspecialchars($komentaarid));
-        echo "<td>" . $konkursiNimi . "</td>";
-        echo "<td>" . $lisamisaeg . "</td>";
-        echo "<td>" . $punktid . "</td>";
-        echo "<td>" . $komentaarid . "</td>";
-        ?>
-        <td>
-            <form action="?" method="post">
-                <input type="hidden" name="uusKomment" value=<?="$id"?>>
-                <input type="text" name="komment" id="komment" class="komentStyle">
-                <input type="submit" value="Lisa" class="submit-btn">
-            </form>
-        </td>
-    <?php
-        echo "<td><a class='button-link' href='?heaKonkurss_id=$id'>+1 punkt</a></td>";
-        echo "<td><a class='button-link' href='?halbKonkurss_id=$id'>-1 punkt</a></td>";
-        echo "<td><a class='button-link' href='?delKonkurss=$id'>❌</a></td>";
+
+        echo "<td><a href='?konkurss_id=" . $id . "'>" . $konkursiNimi . "</a></td>";
         echo "</tr>";
     }
-
     ?>
+
+    <?php
+    if (isset($_REQUEST["konkurss_id"])) {
+        $paring = $yhendus->prepare("SELECT id, konkursiNimi, lisamisaeg, punktid, komentaarid FROM konkurss WHERE id = ?");
+        $paring->bind_result($id, $konkursiNimi, $lisamisaeg, $punktid, $komentaarid);
+        $paring->bind_param("i", $_REQUEST["konkurss_id"]);
+        $paring->execute();
+
+        if ($paring->fetch()) {
+            echo "<div id='sisu' style='border: solid #71797E; padding: 10px;'>";
+            echo "<h3></h3>";
+            echo "<p><strong>Konkursi nimi: </strong> " . htmlspecialchars($konkursiNimi) . "</p>";
+            echo "<p><strong>Lisamis aeg: </strong> " . $lisamisaeg . "</p>";
+            echo "<p><strong>Punktid: </strong> " . $punktid . "</p>";
+            echo "<p><strong>Komentaarid: </strong><br>" . nl2br(htmlspecialchars($komentaarid)) . "</p>";
+            ?>
+                <form action="?" method="post">
+                    <input type="hidden" name="uusKomment" value=<?="$id"?>>
+                    <input type="text" name="komment" id="komment" class="komentStyle">
+                    <input type="submit" value="Lisa" class="">
+                </form>
+    <?php
+            echo "<p><a class='button-link' href='?heaKonkurss_id=$id'>+1 punkt</a></p>";
+            echo "<p><a class='button-link' href='?halbKonkurss_id=$id'>-1 punkt</a></p>";
+            echo "</div>";
+        } else {
+            echo "<p></p>";
+        }
+    }
+    ?>
+
 </table>
 
 </body>
@@ -118,8 +115,27 @@ if (isset($_REQUEST["uusKomment"])){
 <?php $yhendus -> close();?>
 
 <style>
-    .komentStyle{
+    #sisu {
+        width: 30%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    #sisu div {
+        padding: 15px;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+        background-color: #fafafa;
+        border-radius: 8px;
+    }
+
+    #sisu img {
+        display: block;
+        margin-top: 10px;
+        border-radius: 8px;
     }
 
     body{
@@ -133,7 +149,7 @@ if (isset($_REQUEST["uusKomment"])){
     table {
         border-collapse: collapse;
         border-spacing: 0;
-        width: 50%;
+        width: 30%;
         height: 50%;
         border: 1px solid #ddd;
         column-count: 2;
@@ -142,9 +158,9 @@ if (isset($_REQUEST["uusKomment"])){
     }
 
     th, td {
-        text-align: left;
         padding: 16px;
         border: solid #DCDCDC;
+        text-align: center;
     }
 
     tr:nth-child(even) {
@@ -218,4 +234,37 @@ if (isset($_REQUEST["uusKomment"])){
     .submit-btn:hover {
         background-color: #0056b3;
     }
+
+    nav {
+        background-color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        width: 25%;
+        margin: 0 auto;
+    }
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #ff6347;
+    }
+
 </style>

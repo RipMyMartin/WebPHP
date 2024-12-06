@@ -1,4 +1,4 @@
-<?php require "../confZone.php"; global $yhendus?>
+<?php require "../conf.php"; global $yhendus?>
 
 <?php
 //table UPDATE +1 punktid
@@ -54,6 +54,7 @@ if (isset($_REQUEST["uusKomment"])){
     <ul>
         <li><a href="konkursAdmin.php">Admin</a></li>
         <li><a href="konkursKasutaja.php">Kasutaja</a></li>
+        <li><a href="konkursInfo.php">Info</a></li>
     </ul>
 </nav>
 

@@ -1,5 +1,5 @@
 <?php
-require "conf.php";
+require "confZone.php";
 
 global $yhendus;
 if (isset($_REQUEST["kustuta"])) {
@@ -27,6 +27,7 @@ if (isset($_REQUEST['uusOsaleja']) && !empty($_REQUEST['nimi']) && !empty($_REQU
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP Files in Project</title>
+    <link rel="stylesheet" href="matka.css">
 </head>
 <body>
 <h1>Matka osalejad</h1>

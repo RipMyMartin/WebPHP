@@ -1,7 +1,7 @@
 
 
 <?php
-require ("conf.php");
+require ("confZone.php");
 
 //kustutamine
 global $yhendus;
@@ -82,8 +82,6 @@ $paring->execute();*/
         }
     }
     ?>
-
-
 </div>
 <?php
 //lisamis vorm mis avatakse kui vajutatud lisa...

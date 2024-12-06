@@ -1,4 +1,22 @@
-<?php require "../confZone.php"; global $yhendus; ?>
+<?php require "../conf.php"; global $yhendus; ?>
+
+<?php
+//laua peidmine
+if (isset($_REQUEST["peitmine_id"])){
+    $paring = $yhendus-> prepare("UPDATE konkurss set avalik=0 where id =?;");
+    $paring->bind_param('i', $_REQUEST["peitmine_id"]);
+    $paring->execute();
+}
+?>
+
+<?php
+//laua kuvamine/näitamine
+if (isset($_REQUEST["naitmine_id"])){
+    $paring = $yhendus -> prepare("UPDATE konkurss set avalik=1 where id =?;");
+    $paring->bind_param('i', $_REQUEST["naitmine_id"]);
+    $paring->execute();
+}
+?>
 
 <?php
 //table UPDATE +1 punktid
@@ -36,23 +54,6 @@ if (isset($_REQUEST["delKonkurss"])) {
     $paring -> execute();
 }
 ?>
-<?php
-//Näita avalik
-if (isset($_REQUEST["nAvalik"])) {
-    $paring = $yhendus ->prepare("UPDATE konkurss SET avalik = 1 WHERE id = ?;");
-    $paring -> bind_param("i", $_REQUEST["nAvalik"]);
-    $paring -> execute();
-}
-?>
-<?php
-//peida avalik
-if (isset($_REQUEST["pAvalik"])) {
-    $paring = $yhendus -> prepare("UPDATE konkurss SET avalik = 0 WHERE id = ?;");
-    $paring -> bind_param("i", $_REQUEST["pAvalik"]);
-    $paring -> execute();
-}
-?>
-
 
 <?php
 //Komment INSERT
@@ -80,6 +81,7 @@ if (isset($_REQUEST["uusKomment"])){
     <ul>
         <li><a href="konkursAdmin.php">Admin</a></li>
         <li><a href="konkursKasutaja.php">Kasutaja</a></li>
+        <li><a href="konkursInfo.php">Info</a></li>
     </ul>
 </nav>
 
@@ -124,9 +126,16 @@ if (isset($_REQUEST["uusKomment"])){
         <?php
         echo "<td><a class='button-link' href='?heaKonkurss_id=$id'>SET punkt 0</a></td>";
         echo "<td><a class='button-link' href='?delKonkurss=$id'>❌</a></td>";
-        echo "<td><a class='button-link' href='?nAvalik=$id'>Näida</a></td>' ";
-        echo "<td><a class='button-link' href='?pAvalik=$id'>Peida</a></td>";
-        echo "<td>. $avalik . </td>";
+        $avamisetekst='Ava';
+        $avamisparam='naitmine_id';
+        $avamisseisund='Peidetud';
+        if($avalik == 1){
+            $avamisetekst = 'Peida';
+            $avamisparam = 'peitmine_id';
+            $avamisseisund = 'Näidetud';
+        }
+        echo "<td><a class='button-link' href='?$avamisparam=$id'>$avamisetekst</a>";
+        echo "<td>$avamisseisund</td>";
     }
 
     ?>
