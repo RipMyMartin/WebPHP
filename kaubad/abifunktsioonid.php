@@ -1,4 +1,5 @@
 <?php
+/*
 require "../Database/conf.php";
 function kysiKaupadeAndmed($sorttulp="nimetus", $otsisona=""){
     global $yhendus;

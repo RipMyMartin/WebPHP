@@ -1,4 +1,5 @@
 <?php
+/*
 require("abifunktsioonid.php");
 if(isSet($_REQUEST["grupilisamine"])){
     lisaGrupp($_REQUEST["uuegrupinimi"]);
