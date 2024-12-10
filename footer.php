@@ -6,7 +6,7 @@
 
         <div class="footerColum">
             <a href="https://github.com/RipMyMartin"><img class="footerIcons" src="icons/github.png" alt="GitHub icon"></a>
-            <a href="https://www.tthk.ee/"><img class="footerIcons" src="icons/thkIcon.svg" alt="THK icon"></a>
+            <a href="https://martinsild23.thkit.ee/wp/web-desing/"><img class="footerIcons" src="icons/wordpress.png" alt="THK icon"></a>
             <a href="https://github.com/RipMyLoven"><img class="footerIcons" src="icons/RYicon.jpg" alt="R.Y icon"></a>
         </div>
 
