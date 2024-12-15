@@ -154,7 +154,7 @@ function loginUser($conn, $username, $pwd)
         session_start();
         $_SESSION["userid"] = $usernameExists["usersId"];
         $_SESSION["useruid"] = $usernameExists["usersUid"];
-        header("location: ../konkursAdminLeht.php");
+        header("location: ../konkursAdmin.php");
         exit();
     }
 }

@@ -62,6 +62,8 @@ ob_end_flush();
         <li><a href="konkursAdmin.php">Admin</a></li>
         <li><a href="konkursKasutaja.php">Kasutaja</a></li>
         <li><a href="konkursInfo.php">Info</a></li>
+        <li><a href="login.php">Login</a></li>
+        <li><a href="signup.php">Registreerimine</a></li>
     </ul>
 </nav>
 <br>
