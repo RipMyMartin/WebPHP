@@ -8,42 +8,42 @@ if( isset($_POST["submit"]) )
     $pwdRepeat = $_POST["pwdrepeat"];
 
     require_once 'functions.inc.php';
-    require_once '../../conf.php';
+    require_once '../connection/conf.php';
     global $yhendus;
 
     if( emptyInputSignup($name, $email, $username, $pwd, $pwdRepeat) !== false )
     {
-        header("location: ../Database/konkurss/Sisselogimisvorm/signup.php?error=emptyinput");
+        header("location: ../signup.php?error=emptyinput");
         exit();
     }
     if( invalidUsername($username) !== false )
     {
-        header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=invalidusername");
+        header("location: ../signup.php?error=invalidusername");
         exit();
     }
     if( invalidEmail($email) !== false )
     {
-        header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=invalidemail");
+        header("location: ../signup.php?error=invalidemail");
         exit();
     }
     if( passwordsMatch($pwd, $pwdRepeat) !== false )
     {
-        header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=passwordmismatch");
+        header("location: ../signup.php?error=passwordmismatch");
         exit();
     }
     if( usernameExists($yhendus, $username) !== false )
     {
-        header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=usernametaken");
+        header("location: ../signup.php?error=usernametaken");
         exit();
     }
     if( emailExists($yhendus, $email) !== false )
     {
-        header("location: .../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=emailregistered");
+        header("location: ../signup.php?error=emailregistered");
         exit();
     }
     createUser($yhendus, $name, $email, $username, $pwd);
 }
 else {
-    header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/signup.php?error=none");
+    header("location: ../signup.php");
     exit();
 }

@@ -5,12 +5,12 @@ if (isset($_POST["submit"]))
     $pwd = $_POST["pwd"];
 
     require_once 'functions.inc.php';
-    require_once '../../conf.php';
+    require_once '../connection/conf.php';
     global $yhendus;
 
     if(emptyInputLogin($username, $pwd) )
     {
-        header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/login.php?error=emptyinput");
+        header("location: ../login.php?error=emptyinput");
         exit();
     }
 
@@ -18,6 +18,6 @@ if (isset($_POST["submit"]))
 }
 else
 {
-    header("location: ../Database/konkurss/konkurss/Sisselogimisvorm/login.php");
+    header("location: ../login.php");
     exit();
 }
