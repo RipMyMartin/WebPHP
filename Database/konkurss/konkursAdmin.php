@@ -1,10 +1,13 @@
 <?php require "../conf.php"; global $yhendus;
 require "../konkurss/user_handler/logout.inc.php";
-require "../konkurss/user_handler/functions.inc.php";
 ?>
 
 <?php
 
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
 //laua peidmine
 if (isset($_REQUEST["peitmine_id"])){
     $paring = $yhendus-> prepare("UPDATE konkurss set avalik=0 where id =?;");
@@ -66,8 +69,8 @@ if (isset($_REQUEST["uusKomment"])){
     $komentLisa = "\n".$_REQUEST["komment"];
     $paring -> bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
     $paring -> execute();
-    header("Location:$_SERVER[PHP_SELF]");
 }
+
 ?>
 
 <!doctype html>

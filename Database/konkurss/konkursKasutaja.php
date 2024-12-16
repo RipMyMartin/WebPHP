@@ -5,6 +5,11 @@ require "../konkurss/user_handler/logout.inc.php";
 
 ?>
 <?php
+
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'kasutaja') {
+    header("Location: login.php");
+    exit();
+}
 //table UPDATE +1 punktid
 if (isset($_REQUEST["heaKonkurss_id"])) {
     $paring = $yhendus->prepare("UPDATE konkurss set punktid = punktid+1 WHERE id=?;");
