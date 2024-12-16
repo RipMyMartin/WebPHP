@@ -1,8 +1,9 @@
-<?php require "../conf.php"; global $yhendus;
+<?php
+require "../conf.php";
+global $yhendus;
 require "../konkurss/user_handler/logout.inc.php";
 
 ?>
-
 <?php
 //table UPDATE +1 punktid
 if (isset($_REQUEST["heaKonkurss_id"])) {
@@ -30,15 +31,14 @@ if(!empty($_REQUEST["uusKonkurss"])){
 
 }
 ?>
-
 <?php
-//Komment INSERT
-if (isset($_REQUEST["uusKomment"])){
-    $paring = $yhendus ->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid,?) WHERE id=?; ");
-    $komentLisa = "\n".$_REQUEST["komment"];
-    $paring -> bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
-    $paring -> execute();
-    header("Location:$_SERVER[PHP_SELF]");
+if (isset($_REQUEST["uusKomment"]) && !empty($_POST['komment'])) {
+    $komentLisa = "\n" . trim($_POST["komment"]);
+    $paring = $yhendus->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid, ?) WHERE id=?;");
+    $paring->bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
+    $paring->execute();
+    header("Location: $_SERVER[PHP_SELF]");
+    exit;
 }
 ?>
 
@@ -112,12 +112,13 @@ if (isset($_REQUEST["uusKomment"])){
         ?>
         <td>
             <form action="?" method="post">
-                <input type="hidden" name="uusKomment" value=<?="$id"?>>
+                <input type="hidden" name="uusKomment" value="<?= $id ?>">
                 <input type="text" name="komment" id="komment" class="komentStyle">
                 <input type="submit" value="Lisa" class="submit-btn">
             </form>
         </td>
         <?php
+
         echo "<td><a class='button-link' href='?heaKonkurss_id=$id'>+1 punkt</a></td>";
         echo "<td><a class='button-link' href='?halbKonkurss_id=$id'>-1 punkt</a></td>";
         echo "</tr>";

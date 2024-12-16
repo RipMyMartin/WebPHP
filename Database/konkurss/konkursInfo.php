@@ -37,11 +37,11 @@ if(!empty($_REQUEST["uusKonkurss"])){
 <?php
 //Komment INSERT
 ob_start();
-if (isset($_REQUEST["uusKomment"])){
-    $paring = $yhendus ->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid,?) WHERE id=?; ");
-    $komentLisa = "\n".$_REQUEST["komment"];
-    $paring -> bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
-    $paring -> execute();
+if (isset($_REQUEST["uusKomment"]) && !empty($_POST['komment'])) {
+    $komentLisa = "\n" . trim($_POST["komment"]);
+    $paring = $yhendus->prepare("UPDATE konkurss SET komentaarid = CONCAT(komentaarid, ?) WHERE id=?;");
+    $paring->bind_param("si", $komentLisa, $_REQUEST["uusKomment"]);
+    $paring->execute();
     header("Location: $_SERVER[PHP_SELF]");
     exit;
 }
@@ -123,12 +123,20 @@ ob_end_flush();
             echo "<p><strong>Punktid: </strong> " . $punktid . "</p>";
             echo "<p><strong>Komentaarid: </strong><br>" . nl2br(htmlspecialchars($komentaarid)) . "</p>";
             ?>
-                <form action="?" method="post">
-                    <input type="hidden" name="uusKomment" value=<?="$id"?>>
+            <td>
+                <form action="" method="post">
+                    <input type="hidden" name="uusKomment" value="<?= $id ?>">
                     <input type="text" name="komment" id="komment" class="komentStyle">
                     <input type="submit" value="Lisa" class="">
                 </form>
+            </td>
     <?php
+            if (!empty($_POST['komment'])) {
+                $komment = trim($_POST['komment']);
+                echo "Comment: " . htmlspecialchars($komment);
+            } elseif (isset($_POST['komment'])) {
+                echo "Palun lisage kommentaar";
+            }
             echo "<p><a class='button-link' href='?heaKonkurss_id=$id'>+1 punkt</a></p>";
             echo "<p><a class='button-link' href='?halbKonkurss_id=$id'>-1 punkt</a></p>";
             echo "</div>";

@@ -91,8 +91,6 @@ if (isset($_REQUEST["uusKomment"])){
             if ($_SESSION["role"] == "kasutaja") {
                 echo '<li><a href="konkursKasutaja.php">Kasutaja</a></li>';
                 echo '<li><a href="konkursInfo.php">Info</a></li>';
-            } else {
-                echo '<li><a href="konkursInfo.php">Info</a></li>';
             }
             echo '
             <li>
@@ -111,7 +109,7 @@ if (isset($_REQUEST["uusKomment"])){
 <?php
 
 if (isset($_SESSION['useruid'])) {
-    echo '<div class="styled-form"><p>Tere tulemast ' . $_SESSION["useruid"] . '</p></div>';
+    echo '<div class="styled-form"><p>Tere tulemast, ' . $_SESSION["useruid"] . '</p></div>';
 }
 else {
 
