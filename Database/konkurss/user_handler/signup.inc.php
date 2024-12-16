@@ -1,49 +1,43 @@
 <?php
-if( isset($_POST["submit"]) )
-{
-    $name      = $_POST["name"];
-    $email     = $_POST["email"];
-    $username  = $_POST["uid"];
-    $pwd       = $_POST["pwd"];
+if (isset($_POST["submit"])) {
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $username = $_POST["uid"];
+    $pwd = $_POST["pwd"];
     $pwdRepeat = $_POST["pwdrepeat"];
+    $role = $_POST["role"];
 
     require_once 'functions.inc.php';
     require_once '../../conf.php';
     global $yhendus;
 
-    if( emptyInputSignup($name, $email, $username, $pwd, $pwdRepeat) !== false )
-    {
+    if (emptyInputSignup($name, $email, $username, $pwd, $pwdRepeat) !== false) {
         header("location: ../signup.php?error=emptyinput");
         exit();
     }
-    if( invalidUsername($username) !== false )
-    {
+    if (invalidUsername($username) !== false) {
         header("location: ../signup.php?error=invalidusername");
         exit();
     }
-    if( invalidEmail($email) !== false )
-    {
+    if (invalidEmail($email) !== false) {
         header("location: ../signup.php?error=invalidemail");
         exit();
     }
-    if( passwordsMatch($pwd, $pwdRepeat) !== false )
-    {
+    if (passwordsMatch($pwd, $pwdRepeat) !== false) {
         header("location: ../signup.php?error=passwordmismatch");
         exit();
     }
-    if( usernameExists($yhendus, $username) !== false )
-    {
+    if (usernameExists($yhendus, $username) !== false) {
         header("location: ../signup.php?error=usernametaken");
         exit();
     }
-    if( emailExists($yhendus, $email) !== false )
-    {
+    if (emailExists($yhendus, $email) !== false) {
         header("location: ../signup.php?error=emailregistered");
         exit();
     }
-    createUser($yhendus, $name, $email, $username, $pwd);
-}
-else {
+
+    createUser($yhendus, $name, $email, $username, $pwd, $role);
+} else {
     header("location: ../signup.php");
     exit();
 }

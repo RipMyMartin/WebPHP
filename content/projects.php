@@ -2,7 +2,7 @@
     <div class="folder">
         <div class="folder-name">Database</div>
         <div class="files">
-            <div class="file-item"><a href="Database/konkurss/konkursKasutaja.php">KonkurssKasutaja</a></div>
+            <div class="file-item"><a href="Database/konkurss/signup.php">KonkurssKasutaja</a></div>
             <div class="file-item"><a href="Database/loomadYheKaupa.php">LoomadYheKaupa</a></div>
             <div class="file-item"><a href="Database/matkaOsaleja.php">MatkaOsaleja</a></div>
         </div>

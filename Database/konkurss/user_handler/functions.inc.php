@@ -1,5 +1,4 @@
 <?php
-// signup
 function emptyInputSignup($name, $email, $username, $pwd, $pwdRepeat)
 {
     $result = false;
@@ -69,29 +68,27 @@ function emailExists($conn, $email)
     }
 }
 
-function createUser($conn, $name, $email, $username, $pwd)
+function createUser($conn, $name, $email, $username, $pwd, $role)
 {
-    $sql = "INSERT INTO users (usersName, usersEmail, usersUid, usersPwd) VALUES (?, ?, ?, ?);";
+    $sql = "INSERT INTO users (usersName, usersEmail, usersUid, usersPwd, role) VALUES (?, ?, ?, ?, ?);";
 
     $stmt = mysqli_stmt_init($conn);
 
-    if ( !mysqli_stmt_prepare($stmt, $sql) )
-    {
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed");
         exit();
     }
 
     $hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
 
-    mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $username, $hashedPassword);
-
+    mysqli_stmt_bind_param($stmt, "sssss", $name, $email, $username, $hashedPassword, $role);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+
     header("location: ../signup.php?error=none");
     exit();
 }
 
-// signup / login
 function usernameExists($conn, $username)
 {
     $sql = "SELECT * FROM users WHERE usersUid = ?;";
@@ -121,7 +118,6 @@ function usernameExists($conn, $username)
     }
 }
 
-// login
 function emptyInputLogin($username, $pwd)
 {
     $result = false;
@@ -131,12 +127,12 @@ function emptyInputLogin($username, $pwd)
     }
     return $result;
 }
+
 function loginUser($conn, $username, $pwd)
 {
     $usernameExists = usernameExists($conn, $username);
 
-    if ($usernameExists === false)
-    {
+    if ($usernameExists === false) {
         header("location: ../login.php?error=wronglogin");
         exit();
     }
@@ -144,17 +140,23 @@ function loginUser($conn, $username, $pwd)
     $hashedPassword = $usernameExists["usersPwd"];
     $checkPassword = password_verify($pwd, $hashedPassword);
 
-    if ($checkPassword === false )
-    {
+    if ($checkPassword === false) {
         header("location: ../login.php?error=wronglogin");
         exit();
-    }
-    else if ($checkPassword === true )
-    {
+    } else {
         session_start();
         $_SESSION["userid"] = $usernameExists["usersId"];
         $_SESSION["useruid"] = $usernameExists["usersUid"];
-        header("location: ../konkursAdmin.php");
+        $_SESSION["role"] = $usernameExists["role"];
+
+        $role = $usernameExists["role"];
+
+        if ($role == 'admin') {
+            header("location: ../konkursAdmin.php");
+        } else {
+            header("location: ../konkursInfo.php");
+        }
+
         exit();
     }
 }

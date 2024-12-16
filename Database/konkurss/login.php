@@ -1,3 +1,8 @@
+<?php
+require "../konkurss/user_handler/logout.inc.php";
+require "../konkurss/user_handler/functions.inc.php";
+?>
+
 <!DOCTYPE html>
 <html lang="et">
 <head>
@@ -8,11 +13,29 @@
 <h2>Login</h2>
 <nav>
     <ul>
-        <li><a href="konkursAdmin.php">Admin</a></li>
-        <li><a href="konkursKasutaja.php">Kasutaja</a></li>
-        <li><a href="konkursInfo.php">Info</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="signup.php">Registreerimine</a></li>
+        <?php
+        if (isset($_SESSION["useruid"])) {
+            if ($_SESSION["role"] == "admin") {
+                echo '<li><a href="konkursAdmin.php">Admin</a></li>';
+            }
+            if ($_SESSION["role"] == "kasutaja") {
+                echo '<li><a href="konkursKasutaja.php">Kasutaja</a></li>';
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            } else {
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            }
+            echo '
+            <li>
+                <form method="POST">
+                    <input type="submit" class="submit-btn2" name="logout" value="Logout">
+                </form>
+            </li>';
+        } else {
+            echo '<li><a href="konkursInfo.php">Info</a></li>';
+            echo '<li><a href="login.php">Login</a></li>';
+            echo '<li><a href="signup.php">Registreeri</a></li>';
+        }
+        ?>
     </ul>
 </nav>
 <main>
@@ -46,3 +69,12 @@
 </main>
 </body>
 </html>
+<style>
+    .submit-btn2 {
+        color: white;
+        background-color: red;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>

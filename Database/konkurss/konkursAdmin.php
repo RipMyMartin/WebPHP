@@ -1,6 +1,10 @@
-<?php require "../conf.php"; global $yhendus; ?>
+<?php require "../conf.php"; global $yhendus;
+require "../konkurss/user_handler/logout.inc.php";
+require "../konkurss/user_handler/functions.inc.php";
+?>
 
 <?php
+
 //laua peidmine
 if (isset($_REQUEST["peitmine_id"])){
     $paring = $yhendus-> prepare("UPDATE konkurss set avalik=0 where id =?;");
@@ -79,13 +83,40 @@ if (isset($_REQUEST["uusKomment"])){
 <h2>Jõulu konkurss</h2>
 <nav>
     <ul>
-        <li><a href="konkursAdmin.php">Admin</a></li>
-        <li><a href="konkursKasutaja.php">Kasutaja</a></li>
-        <li><a href="konkursInfo.php">Info</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="signup.php">Registreerimine</a></li>
+        <?php
+        if (isset($_SESSION["useruid"])) {
+            if ($_SESSION["role"] == "admin") {
+                echo '<li><a href="konkursAdmin.php">Admin</a></li>';
+            }
+            if ($_SESSION["role"] == "kasutaja") {
+                echo '<li><a href="konkursKasutaja.php">Kasutaja</a></li>';
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            } else {
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            }
+            echo '
+            <li>
+                <form method="POST">
+                    <input type="submit" class="submit-btn2" name="logout" value="Logout">
+                </form>
+            </li>';
+        } else {
+            echo '<li><a href="konkursInfo.php">Info</a></li>';
+            echo '<li><a href="login.php">Login</a></li>';
+            echo '<li><a href="signup.php">Registreeri</a></li>';
+        }
+        ?>
     </ul>
 </nav>
+<?php
+
+if (isset($_SESSION['useruid'])) {
+    echo '<div class="styled-form"><p>Tere tulemast ' . $_SESSION["useruid"] . '</p></div>';
+}
+else {
+
+}
+?>
 
 
 <form action="?" method="post" class="styled-form">
@@ -103,6 +134,7 @@ if (isset($_REQUEST["uusKomment"])){
         <th colspan="2">Komentaarid</th>
         <th colspan="2" style="text-align: center">Haldus</th>
         <th colspan="3">Näita konkurs</th>
+
     </tr>
     <?php
     //tabeli sisu kuvamine
@@ -275,5 +307,18 @@ if (isset($_REQUEST["uusKomment"])){
 
     nav ul li a:hover {
         color: #ff6347;
+    }
+
+    .userLScontainer{
+        width: 14%;
+        margin: 0 auto;
+        margin-top: 2rem;
+    }
+    .submit-btn2{
+        color: white;
+        background-color: red;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
     }
 </style>

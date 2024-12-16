@@ -2,6 +2,8 @@
 ob_start();
 require "../conf.php";
 global $yhendus;
+require "../konkurss/user_handler/logout.inc.php";
+
 ?>
 
 <?php
@@ -45,7 +47,6 @@ if (isset($_REQUEST["uusKomment"])){
 }
 ob_end_flush();
 ?>
-
 <!doctype html>
 <html lang="en">
 <header>
@@ -59,11 +60,29 @@ ob_end_flush();
 <h2>Jõulu konkurss</h2>
 <nav>
     <ul>
-        <li><a href="konkursAdmin.php">Admin</a></li>
-        <li><a href="konkursKasutaja.php">Kasutaja</a></li>
-        <li><a href="konkursInfo.php">Info</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="signup.php">Registreerimine</a></li>
+        <?php
+        if (isset($_SESSION["useruid"])) {
+            if ($_SESSION["role"] == "admin") {
+                echo '<li><a href="konkursAdmin.php">Admin</a></li>';
+            }
+            if ($_SESSION["role"] == "kasutaja") {
+                echo '<li><a href="konkursKasutaja.php">Kasutaja</a></li>';
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            } else {
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            }
+            echo '
+            <li>
+                <form method="POST">
+                    <input type="submit" class="submit-btn2" name="logout" value="Logout">
+                </form>
+            </li>';
+        } else {
+            echo '<li><a href="konkursInfo.php">Info</a></li>';
+            echo '<li><a href="login.php">Login</a></li>';
+            echo '<li><a href="signup.php">Registreeri</a></li>';
+        }
+        ?>
     </ul>
 </nav>
 <br>
@@ -172,7 +191,13 @@ $yhendus -> close();?>
         margin-top: 10px;
         border-radius: 8px;
     }
-
+    .submit-btn2{
+        color: white;
+        background-color: red;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
+    }
     body{
         font-family: Arial, sans-serif;
     }

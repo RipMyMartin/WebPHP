@@ -1,4 +1,7 @@
-<?php require "../conf.php"; global $yhendus?>
+<?php require "../conf.php"; global $yhendus;
+require "../konkurss/user_handler/logout.inc.php";
+
+?>
 
 <?php
 //table UPDATE +1 punktid
@@ -52,14 +55,31 @@ if (isset($_REQUEST["uusKomment"])){
 <h2>Jõulu konkurss</h2>
 <nav>
     <ul>
-        <li><a href="konkursAdmin.php">Admin</a></li>
-        <li><a href="konkursKasutaja.php">Kasutaja</a></li>
-        <li><a href="konkursInfo.php">Info</a></li>
-        <li><a href="login.php">Login</a></li>
-        <li><a href="signup.php">Registreerimine</a></li>
+        <?php
+        if (isset($_SESSION["useruid"])) {
+            if ($_SESSION["role"] == "admin") {
+                echo '<li><a href="konkursAdmin.php">Admin</a></li>';
+            }
+            if ($_SESSION["role"] == "kasutaja") {
+                echo '<li><a href="konkursKasutaja.php">Kasutaja</a></li>';
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            } else {
+                echo '<li><a href="konkursInfo.php">Info</a></li>';
+            }
+            echo '
+            <li>
+                <form method="POST">
+                    <input type="submit" class="submit-btn2" name="logout" value="Logout">
+                </form>
+            </li>';
+        } else {
+            echo '<li><a href="konkursInfo.php">Info</a></li>';
+            echo '<li><a href="login.php">Login</a></li>';
+            echo '<li><a href="signup.php">Registreeri</a></li>';
+        }
+        ?>
     </ul>
 </nav>
-
 
 <form action="?" method="post" class="styled-form">
     <label for="uusKonkurss">Lisa konkurssi nimi</label>
@@ -132,6 +152,13 @@ if (isset($_REQUEST["uusKomment"])){
         column-count: 2;
         column-gap: 20px;
         margin: auto;
+    }
+    .submit-btn2{
+        color: white;
+        background-color: red;
+        border: none;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     th, td {

@@ -1,6 +1,11 @@
 <?php
 session_start();
-session_unset();
-session_destroy();
-header("location: ../konkursInfo.php");
-exit();
+
+if (isset($_POST['logout'])) {
+    session_start();
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+?>
