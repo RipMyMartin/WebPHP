@@ -4,20 +4,17 @@ require "user_handler/logout.inc.php";
 
 global $yhendus;
 
-// Проверка, если пользователь не авторизован или не является администратором
 if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
-// Обработчик для завершения забега
 if (isset($_REQUEST["loppaeg"])) {
     $kask = $yhendus->prepare("UPDATE jooksjad SET lopetamisaeg = NOW() WHERE id = ?");
     $kask->bind_param("i", $_REQUEST["loppaeg"]);
     $kask->execute();
 }
 
-// Запрос для топ-3 бегунов с наименьшим временем (по разнице между началом и финишем)
 $paring_top = $yhendus->prepare("
     SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg,
            TIMESTAMPDIFF(SECOND, alustamisaeg, lopetamisaeg) AS vaheaeg
@@ -43,7 +40,6 @@ while ($paring_top->fetch()) {
 }
 $paring_top->close();
 
-// Запрос для остальных бегунов (те, кто не в топ-3)
 $paring_rest = $yhendus->prepare("
     SELECT j.id, j.eesnimi, j.perenimi, j.alustamisaeg, j.lopetamisaeg,
            TIMESTAMPDIFF(SECOND, j.alustamisaeg, j.lopetamisaeg) AS vaheaeg
@@ -108,7 +104,6 @@ include "jooksjateNav.php";
         echo "<td>".htmlspecialchars($runner['perenimi'])."</td>";
         echo "<td>".htmlspecialchars($runner['alustamisaeg'])."</td>";
 
-        // Показываем время финиша, если оно есть
         $lopetamisaeg_display_top = $runner['lopetamisaeg'] ? htmlspecialchars($runner['lopetamisaeg']) : "ei loppenud";
         echo "<td>".$lopetamisaeg_display_top."</td>";
 
@@ -138,7 +133,6 @@ include "jooksjateNav.php";
         echo "<td>".htmlspecialchars($runner['perenimi'])."</td>";
         echo "<td>".htmlspecialchars($runner['alustamisaeg'])."</td>";
 
-        // Показываем время финиша, если оно есть
         $lopetamisaeg_display_rest = $runner['lopetamisaeg'] ? htmlspecialchars($runner['lopetamisaeg']) : "ei loppenud";
         echo "<td>".$lopetamisaeg_display_rest."</td>";
 
