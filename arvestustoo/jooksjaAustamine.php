@@ -8,19 +8,16 @@ if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
-// Update the finish time for a runner
 if (isset($_REQUEST["loppaeg"])) {
     $kask = $yhendus->prepare("UPDATE jooksjad SET lopetamisaeg = NOW() WHERE id = ?");
     $kask->bind_param("i", $_REQUEST["loppaeg"]);
     $kask->execute();
 }
 
-// Query to fetch the top 3 best times
 $paring_top = $yhendus->prepare("SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg, vaheaeg FROM jooksjad WHERE vaheaeg >= 2 ORDER BY vaheaeg ASC LIMIT 3");
 $paring_top->bind_result($id_top, $eesnimi_top, $perenimi_top, $alustamisaeg_top, $lopetamisaeg_top, $vaheaeg_top);
 $paring_top->execute();
 
-// Fetch all results for the top 3 runners
 $top_runners = [];
 while ($paring_top->fetch()) {
     $top_runners[] = [
@@ -32,9 +29,8 @@ while ($paring_top->fetch()) {
         'vaheaeg' => $vaheaeg_top
     ];
 }
-$paring_top->close(); // Close the result set
+$paring_top->close();
 
-// Query to fetch the remaining runners using a JOIN instead of a subquery
 $paring_rest = $yhendus->prepare("
     SELECT j.id, j.eesnimi, j.perenimi, j.alustamisaeg, j.lopetamisaeg, j.vaheaeg
     FROM jooksjad j
@@ -52,7 +48,6 @@ $paring_rest = $yhendus->prepare("
 $paring_rest->bind_result($id_rest, $eesnimi_rest, $perenimi_rest, $alustamisaeg_rest, $lopetamisaeg_rest, $vaheaeg_rest);
 $paring_rest->execute();
 
-// Fetch results for the remaining runners
 $rest_runners = [];
 while ($paring_rest->fetch()) {
     $rest_runners[] = [
@@ -64,7 +59,7 @@ while ($paring_rest->fetch()) {
         'vaheaeg' => $vaheaeg_rest
     ];
 }
-$paring_rest->close(); // Close the result set
+$paring_rest->close();
 ?>
 
 <!doctype html>
@@ -124,7 +119,6 @@ include "jooksjateNav.php";
     </tr>
 
     <?php
-    // Display remaining runners
     foreach ($rest_runners as $runner) {
         echo "<tr>";
         echo "<td>".$runner['id']."</td>";
