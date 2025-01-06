@@ -1,32 +1,28 @@
-
-
 <?php
-require ("conf.php");
+require ('../Database/conf.php');
+require "user_handler/logout.inc.php";
 
 //kustutamine
 global $yhendus;
-if (isset($_REQUEST["kustuta"])){
-    $kask = $yhendus->prepare("DELETE FROM loomad WHERE id=?");
-    $kask->bind_param("i",$_REQUEST["kustuta"]);
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'kasutaja') {
+    header("Location: login.php");
+    exit();
+}
+if (isset($_REQUEST["kustuta"])) {
+    $kask = $yhendus->prepare("DELETE FROM jooksjad WHERE id=?");
+    $kask->bind_param("i", $_REQUEST["kustuta"]);
     $kask->execute();
 }
 
 //tabeli andmete lisamine
-if (isset($_REQUEST['uusLoom']) && !empty($_REQUEST['loomaNimi']) && !empty($_REQUEST['omanik']) &&!empty($_REQUEST['varv']) && !empty($_REQUEST['pilt'])
-) {
+if (isset($_REQUEST['eesnimi']) && !empty($_REQUEST['perenimi'])) {
     global $yhendus;
-    $paring = $yhendus->prepare("INSERT INTO loomad(loomaNimi, omanik, varv, pilt) VALUES (?, ?, ?, ?)");
-    $paring -> bind_param("ssss", $_REQUEST['loomaNimi'], $_REQUEST['omanik'], $_REQUEST['varv'], $_REQUEST['pilt']);
-    $paring -> execute();
-}
-/*
-//tabeli sisu kuvamine
-global $yhendus;
-$paring=$yhendus->prepare("SELECT id, loomaNimi, omanik, varv, pilt FROM loomad");
-$paring->bind_result($id, $loomaNimi, $omanik, $varv, $pilt);
-$paring->execute();*/
-?>
 
+    $paring = $yhendus->prepare("INSERT INTO jooksjad(eesnimi, perenimi) VALUES (?, ?)");
+    $paring->bind_param("ss", $_REQUEST['eesnimi'], $_REQUEST['perenimi']);
+    $paring->execute();
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,82 +30,68 @@ $paring->execute();*/
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Looma 1 kaupa</title>
+    <title>Jooksjad 1 kaupa</title>
 </head>
 <body>
+<?php
+include ('jooksjateNav.php')
+?>
 <div id="menu">
 
-<h1>Looma 1 kaupa</h1>
-<ul>
-    <?php
-
-    //loomade nimed andmebaasist
-    global $yhendus;
-    $paring=$yhendus->prepare("SELECT id, loomaNimi, omanik, varv, pilt FROM loomad");
-    $paring->bind_result($id, $loomaNimi, $omanik, $varv, $pilt);
-    $paring->execute();
-
-    while($paring->fetch()){
-        echo "<li><a href='?looma_id=$id'>".$loomaNimi."</a></li>";
-    }
-    ?>
-
-</ul>
+    <h1>Jooksjad lisamine</h1>
     <?php
     echo '<a href="?lisamine=jah">LISA...</a>';
-
     ?>
 </div>
 
-<div id="sisu">
-    <?php
-    // kui klcik looma nimele, siis näitame looma info
 
-    if(isset($_REQUEST["looma_id"])){
-        $paring=$yhendus->prepare("SELECT id, loomaNimi, omanik,varv, pilt FROM loomad WHERE id=?");
-        $paring->bind_result($id, $loomaNimi, $omanik, $varv, $pilt);
-        $paring->bind_param("i", $_REQUEST["looma_id"]);
-        $paring->execute();
-
-        //näitame ühe kaupa
-        if($paring->fetch()){
-            echo "<div style='border: solid #71797E'> LoomaNimi:".$loomaNimi;
-            echo "<br> Tõug: ".$varv;
-            echo "<br><img src='$pilt' alt='looma pilt' width='100px'>";
-            echo "<br>Omanik: ".$omanik;
-            echo "<br><a href='?kustuta=$id'>X</a></br>";
-            echo "</div>";
-        }
-    }
-    ?>
-</div>
 <?php
-//lisamis vorm mis avatakse kui vajutatud lisa...
-if(isset($_REQUEST["lisamine"])){
-?>
+//lisamisvorm, mis avatakse, kui vajutatakse lisa
+if (isset($_REQUEST["lisamine"])) {
+    ?>
     <form action="?" method="post">
-        <input type="hidden" value="jah" name="uusLoom">
-        <label for="loomaNimi">LoomaNimi</label>
-        <input type="text" id="loomaNimi" name="loomaNimi">
+        <input type="hidden" value="jah" name="uusJooksja">
+        <label for="eesnimi">Eesnimi</label>
+        <input type="text" id="eesnimi" name="eesnimi">
         <br>
-        <label for="omanik">omanik</label>
-        <input type="text" id="omanik" name="omanik">
+        <label for="perenimi">Perenimi</label>
+        <input type="text" id="perenimi" name="perenimi">
         <br>
-        <label for="varv">Värv</label>
-        <input type="color" id="varv" name="varv">
-        <br>
-        <label for="pilt">pilt</label>
-        <input type="text" id="pilt" name="pilt">
-        <br>
-        <input type="submit" value="oK">
+        <input type="submit" value="OK">
     </form>
-<?php
+    <?php
 }
 ?>
 </body>
 </html>
 
 <style>
+
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #ff6347;
+    }
+
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
@@ -117,7 +99,6 @@ if(isset($_REQUEST["lisamine"])){
         padding: 0;
         width: 50%;
     }
-
 
     #menu {
         background-color: #333;
@@ -174,14 +155,8 @@ if(isset($_REQUEST["lisamine"])){
         border-radius: 8px;
     }
 
-    #sisu img {
-        display: block;
-        margin-top: 10px;
-        border-radius: 8px;
-    }
-
     form input[type="text"],
-    form input[type="color"],
+    form input[type="datetime-local"],
     form input[type="submit"] {
         width: 100%;
         padding: 8px;
@@ -228,4 +203,3 @@ if(isset($_REQUEST["lisamine"])){
         background-color: #3f51b5;
     }
 </style>
-

@@ -14,6 +14,12 @@
             <div class="file-item"><a href="mobiiliUlesanne/Mobiilimall/ulesanne2/indexUlesanne2.php">Ulesanne2</a></div>
         </div>
     </div>
+    <div class="folder">
+        <div class="folder-name">Arvestustöö</div>
+        <div class="files">
+            <div class="file-item"><a href="arvestustoo/signup.php">Jooksuvõistlus</a></div>
+        </div>
+    </div>
 </div>
 
 <style>
