@@ -33,6 +33,7 @@ $paring->execute();
 </head>
 <body>
 <?php
+include "JooksjadHeader.php";
 include "jooksjateNav.php";
 ?>
 
@@ -42,7 +43,6 @@ include "jooksjateNav.php";
         <th>Eesnimi</th>
         <th>Perenimi</th>
         <th>Algusaeg</th>
-        <th>Lõppaeg</th>
         <th>Vaheaeg</th>
         <th>Vaheaeg Lisamine</th>
     </tr>
@@ -50,12 +50,15 @@ include "jooksjateNav.php";
     <?php
     // Вывод данных о пользователях
     while ($paring->fetch()) {
+
+        if ($alustamisaeg == null) {
+            continue;
+        }
         echo "<tr>";
         echo "<td>".$id."</td>";
         echo "<td>".htmlspecialchars($eesnimi)."</td>";
         echo "<td>".htmlspecialchars($perenimi)."</td>";
         echo "<td>".htmlspecialchars($alustamisaeg)."</td>";
-        echo "<td>".htmlspecialchars($lopetamisaeg)."</td>";
         echo "<td>".htmlspecialchars($vaheaeg)."</td>";
         echo "<td><a class='button-link' href='?vaheaeg=$id'>+2</a></td>";
         echo "</tr>";

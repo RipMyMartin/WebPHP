@@ -1,4 +1,6 @@
 <?php
+ob_start();
+if(isset($_GET['code'])){die(highlight_file(__FILE__, 1));}
 require "../Database/konkurss/user_handler/functions.inc.php";
 
 ?>

@@ -15,6 +15,7 @@ if (isset($_REQUEST["loppaeg"])) {
     $kask->execute();
 }
 
+
 $paring_top = $yhendus->prepare("
     SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg,
            TIMESTAMPDIFF(SECOND, alustamisaeg, lopetamisaeg) AS vaheaeg
@@ -70,6 +71,10 @@ while ($paring_rest->fetch()) {
     ];
 }
 $paring_rest->close();
+
+$paring = $yhendus->prepare("SELECT alustamisaeg, lopetamisaeg FROM jooksjad");
+$paring->bind_result($alustamisaeg, $lopetamisaeg);
+$paring->execute();
 ?>
 
 <!doctype html>
@@ -82,6 +87,7 @@ $paring_rest->close();
 </head>
 <body>
 <?php
+include "JooksjadHeader.php";
 include "jooksjateNav.php";
 ?>
 
@@ -93,11 +99,26 @@ include "jooksjateNav.php";
         <th>Perenimi</th>
         <th>Algusaeg</th>
         <th>Lõppaeg</th>
-        <th>Lõppaeg nupp</th>
+        <th>Aeg</th>
     </tr>
 
+
     <?php
+
     foreach ($top_runners as $runner) {
+        if ($runner['alustamisaeg'] && $runner['lopetamisaeg']) {
+            $startTime = strtotime($runner['alustamisaeg']);
+            $endTime = strtotime($runner['lopetamisaeg']);
+            $elapsedTime = $endTime - $startTime;
+        } else {
+            $elapsedTime = 0;
+        }
+
+        $hours = floor($elapsedTime / 3600);
+        $minutes = floor(($elapsedTime % 3600) / 60);
+        $seconds = $elapsedTime % 60;
+        $formattedTime = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+
         echo "<tr>";
         echo "<td>".$runner['id']."</td>";
         echo "<td>".htmlspecialchars($runner['eesnimi'])."</td>";
@@ -106,8 +127,8 @@ include "jooksjateNav.php";
 
         $lopetamisaeg_display_top = $runner['lopetamisaeg'] ? htmlspecialchars($runner['lopetamisaeg']) : "ei loppenud";
         echo "<td>".$lopetamisaeg_display_top."</td>";
+        echo "<td>".$formattedTime."</td>";
 
-        echo "<td><a class='button-link' href='?loppaeg=".$runner['id']."'>Lõpp</a></td>";
         echo "</tr>";
     }
     ?>
@@ -122,11 +143,20 @@ include "jooksjateNav.php";
         <th>Perenimi</th>
         <th>Algusaeg</th>
         <th>Lõppaeg</th>
-        <th>Lõppaeg nupp</th>
+        <th>Aeg</th>
     </tr>
 
     <?php
     foreach ($rest_runners as $runner) {
+
+        if ($runner['alustamisaeg'] && $runner['lopetamisaeg']) {
+            $startTime = strtotime($runner['alustamisaeg']);
+            $endTime = strtotime($runner['lopetamisaeg']);
+            $elapsedTime = $endTime - $startTime;
+        } else {
+            $elapsedTime = 0;
+        }
+
         echo "<tr>";
         echo "<td>".$runner['id']."</td>";
         echo "<td>".htmlspecialchars($runner['eesnimi'])."</td>";
@@ -135,9 +165,10 @@ include "jooksjateNav.php";
 
         $lopetamisaeg_display_rest = $runner['lopetamisaeg'] ? htmlspecialchars($runner['lopetamisaeg']) : "ei loppenud";
         echo "<td>".$lopetamisaeg_display_rest."</td>";
+        echo "<td>".htmlspecialchars($elapsedTime)."</td>";
 
-        echo "<td><a class='button-link' href='?loppaeg=".$runner['id']."'>Lõpp</a></td>";
         echo "</tr>";
+
     }
     ?>
 

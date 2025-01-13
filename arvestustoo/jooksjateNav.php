@@ -30,6 +30,11 @@ require ('user_handler/logout.inc.php');
         ?>
     </ul>
 </nav>
+<?php
+if (isset($_SESSION['useruid'])) {
+    echo '<div class="styled-form"><p>Tere tulemast, ' . $_SESSION["useruid"] . '</p></div>';
+}
+?>
 <br>
 <style>
     nav {
@@ -62,5 +67,22 @@ require ('user_handler/logout.inc.php');
 
     nav ul li a:hover {
         color: #ff6347;
+    }
+
+    .styled-form {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .styled-form label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #333;
     }
 </style>

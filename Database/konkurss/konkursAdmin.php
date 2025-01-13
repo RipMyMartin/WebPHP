@@ -114,9 +114,6 @@ if (isset($_REQUEST["uusKomment"])){
 if (isset($_SESSION['useruid'])) {
     echo '<div class="styled-form"><p>Tere tulemast, ' . $_SESSION["useruid"] . '</p></div>';
 }
-else {
-
-}
 ?>
 
 

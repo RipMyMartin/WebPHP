@@ -13,6 +13,11 @@ if (isset($_REQUEST["loppaeg"])) {
     $kask->bind_param("i", $_REQUEST["loppaeg"]);
     $kask->execute();
 }
+if (isset($_REQUEST["loppaeg"])) {
+    $kask = $yhendus->prepare("UPDATE jooksjad SET vaheaeg = 0 WHERE id = ?");
+    $kask->bind_param("i", $_REQUEST["loppaeg"]);
+    $kask->execute();
+}
 
 $paring = $yhendus->prepare("SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg, vaheaeg FROM jooksjad WHERE vaheaeg >= 2");
 $paring->bind_result($id, $eesnimi, $perenimi, $alustamisaeg, $lopetamisaeg, $vaheaeg);
@@ -29,6 +34,7 @@ $paring->execute();
 </head>
 <body>
 <?php
+include "JooksjadHeader.php";
 include "jooksjateNav.php";
 ?>
 
@@ -45,6 +51,10 @@ include "jooksjateNav.php";
 
     <?php
     while ($paring->fetch()) {
+
+        if ($lopetamisaeg !== null) {
+            continue;
+        }
         echo "<tr>";
         echo "<td>".$id."</td>";
         echo "<td>".htmlspecialchars($eesnimi)."</td>";

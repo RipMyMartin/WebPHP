@@ -16,7 +16,7 @@ if (isset($_REQUEST["kustuta"])) {
 }
 
 if (isset($_REQUEST["algusaeg_kogu"])) {
-    $kask = $yhendus->prepare("UPDATE jooksjad SET alustamisaeg = NOW()");
+    $kask = $yhendus->prepare("UPDATE jooksjad SET alustamisaeg = NOW() WHERE alustamisaeg IS NULL");
     $kask->execute();
 }
 
@@ -33,207 +33,140 @@ if (isset($_REQUEST['uusJooksja']) && !empty($_REQUEST['eesnimi']) && !empty($_R
     $paring->bind_param("ssss", $_REQUEST['eesnimi'], $_REQUEST['perenimi'], $_REQUEST['alustamisaeg'], $_REQUEST['lopetamisaeg']);
     $paring->execute();
 }
+
+$paring = $yhendus->prepare("SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg, vaheaeg FROM jooksjad");
+$paring->bind_result($id, $eesnimi, $perenimi, $alustamisaeg, $lopetamisaeg, $vaheaeg);
+$paring->execute();
+
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Jooksjad 1 kaupa</title>
+    <title>jooksjate vaheaeg</title>
 </head>
 <body>
 <?php
-include ('jooksjateNav.php');
+include "JooksjadHeader.php";
+include "jooksjateNav.php";
+echo "
+<div class='button-container'>
+    <td><a class='button-link2' href='?algusaeg_kogu=$id'>All start</a></td>
+</div>
+"
 ?>
-<div id="menu">
 
-    <h1>Stardi protokoll</h1>
-    <ul>
-        <?php
-        //jooksjate nimed andmebaasist
-        global $yhendus;
-        $paring = $yhendus->prepare("SELECT id, eesnimi, perenimi FROM jooksjad");
-        $paring->bind_result($id, $eesnimi, $perenimi);
-        $paring->execute();
+<table>
+    <tr>
+        <th>id</th>
+        <th>Eesnimi</th>
+        <th>Perenimi</th>
+        <th>Algusaeg</th>
+        <th>Kustuta</th>
+    </tr>
 
-        while ($paring->fetch()) {
-            echo "<li><a href='?jooksja_id=$id'>$eesnimi $perenimi</a></li>";
-        }
-        ?>
-
-    </ul>
-
-    <form action="" method="get">
-        <input type="submit" name="algusaeg_kogu" value="Märgi kõikidele algusaeg">
-    </form>
-</div>
-<div id="sisu">
     <?php
-    // kui klikitakse jooksja nimele, siis näitame jooksja info
-    if (isset($_REQUEST["jooksja_id"])) {
-        $paring = $yhendus->prepare("SELECT id, eesnimi, perenimi, alustamisaeg, lopetamisaeg FROM jooksjad WHERE id=?");
-        $paring->bind_result($id, $eesnimi, $perenimi, $alustamisaeg, $lopetamisaeg);
-        $paring->bind_param("i", $_REQUEST["jooksja_id"]);
-        $paring->execute();
+    while ($paring->fetch()) {
 
-        //näitame ühe kaupa
-        if ($paring->fetch()) {
-            echo "<div style='border: solid #71797E'> Eesnimi: $eesnimi";
-            echo "<br> Perenimi: $perenimi";
-            echo "<br>Algusaeg: <a href='?algusaeg=$id'>X</a>";
-            echo "<br>Kustuta: <a href='?kustuta=$id'>X</a></br>";
-            echo "</div>";
+        if ($alustamisaeg !== null) {
+            continue;
         }
+
+        $startTime = strtotime($alustamisaeg);
+        $endTime = strtotime($lopetamisaeg);
+        $elapsedTime = $endTime - $startTime;
+
+        echo "<tr>";
+        echo "<td>".$id."</td>";
+        echo "<td>".htmlspecialchars($eesnimi)."</td>";
+        echo "<td>".htmlspecialchars($perenimi)."</td>";
+        echo "<td>".htmlspecialchars($alustamisaeg)."</td>";
+        echo "<td><a class='button-link' href='?kustuta=$id'>Delete</a></td>";
+        echo "</tr>";
     }
+
+    $paring->close();
     ?>
-</div>
+
+</table>
 </body>
 </html>
 
+<?php
+$yhendus->close();
+?>
+
 <style>
-    nav {
-        background-color: #333;
-        padding: 10px;
-        border-radius: 5px;
-        width: 50%;
-        margin: 0 auto;
+    h1{
+        text-align: center;
     }
-
-    nav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: space-around;
-    }
-
-    nav ul li {
-        margin: 0 10px;
-    }
-
-    nav ul li a {
-        text-decoration: none;
+    .button-link {
+        display: inline-block;
+        padding: 5px 20px;
+        background-color: #007BFF;
         color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        width: 75%;
         font-size: 16px;
-        font-weight: bold;
-        transition: color 0.3s;
+        transition: background-color 0.3s ease;
     }
 
-    nav ul li a:hover {
-        color: #ff6347;
+    .button-link:hover {
+        background-color: #0056b3;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button-link2 {
+        display: inline-block;
+        padding: 5px 20px;
+        background-color: #007BFF;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        width: 25%;
+        height: 1rem;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin: auto;
+    }
+
+    .button-link2:hover {
+        background-color: #0056b3;
     }
 
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: auto;
-        padding: 0;
-        width: 50%;
     }
 
-    #menu {
-        background-color: #333;
-        color: white;
-        padding: 15px;
-        text-align: center;
-    }
-
-    #menu h1 {
-        margin: 0;
-    }
-
-    #menu ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    #menu li {
-        display: inline-block;
-        margin: 10px;
-    }
-
-    #menu a {
-        color: white;
+    a {
+        color: inherit;
         text-decoration: none;
-        padding: 5px 10px;
-        background-color: #5c6bc0;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
     }
 
-    #menu a:hover {
-        background-color: #3f51b5;
-    }
-
-    #menu a:active {
-        background-color: #303f9f;
-    }
-
-    #sisu {
-        width: 60%;
+    table {
+        border-collapse: collapse;
+        width: 80%;
         margin: 20px auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    #sisu div {
-        padding: 15px;
+    th, td {
+        text-align: left;
+        padding: 16px;
         border: 1px solid #ddd;
-        margin-bottom: 15px;
-        background-color: #fafafa;
-        border-radius: 8px;
     }
 
-    form input[type="text"],
-    form input[type="datetime-local"],
-    form input[type="submit"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-
-    form input[type="submit"] {
-        background-color: #5c6bc0;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    form input[type="submit"]:hover {
-        background-color: #3f51b5;
-    }
-
-    form input[type="submit"]:active {
-        background-color: #303f9f;
-    }
-
-    form label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    #menu a[href*="lisamine=jah"] {
-        display: inline-block;
-        margin-top: 15px;
-        background-color: #5c6bc0;
-        color: white;
-        padding: 8px 15px;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    #menu a[href*="lisamine=jah"]:hover {
-        background-color: #3f51b5;
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
     }
 </style>

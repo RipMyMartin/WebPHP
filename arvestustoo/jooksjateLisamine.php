@@ -34,7 +34,9 @@ if (isset($_REQUEST['eesnimi']) && !empty($_REQUEST['perenimi'])) {
 </head>
 <body>
 <?php
-include ('jooksjateNav.php')
+include "JooksjadHeader.php";
+include ('jooksjateNav.php');
+
 ?>
 <div id="menu">
 
@@ -201,5 +203,22 @@ if (isset($_REQUEST["lisamine"])) {
 
     #menu a[href*="lisamine=jah"]:hover {
         background-color: #3f51b5;
+    }
+
+    .styled-form {
+        width: 300px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    .styled-form label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #333;
     }
 </style>
