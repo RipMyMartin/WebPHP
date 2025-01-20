@@ -20,6 +20,13 @@
             <div class="file-item"><a href="arvestustoo/signup.php">Jooksuvõistlus</a></div>
         </div>
     </div>
+    <div class="folder">
+        <div class="folder-name">Loov ülesanne JS</div>
+        <div class="files">
+            <div class="file-item"><a href="loovUlesanneJS/coolors-clone/index.html">coolors-clone</a></div>
+            <div class="file-item"><a href="loovUlesanneJS/TicTacTocGame/index.html">TicTacTocGame</a></div>
+        </div>
+    </div>
 </div>
 
 <style>
